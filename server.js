@@ -8,14 +8,24 @@ const passport = require('passport');
 const Auth0Strategy = require('passport-auth0');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 const app = express();
+// Set EJS as the view engine
+app.set("view engine", "ejs");
+
+// Set the views directory
+app.set("views", path.join(__dirname, "views"));
+
+
 app.set('trust proxy', 1); // Trust first proxy
 app.use(cors({
   origin: ['https://lazy-puce-tortoise-yoke.cyclic.app', 'https://moozhan.github.io'], // Update with the location of your HTML file
   credentials: true
 }));
 app.use(cookieParser());
+
+
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -52,7 +62,7 @@ app.use(passport.session());
 
 // Serve the HTML file as the root page
 app.get('/', (req, res) => {
-  res.sendFile('path_to_your_html_file/index.html', { root: __dirname });
+  res.render('index.ejs');
 });
 
 // Auth0 login route
