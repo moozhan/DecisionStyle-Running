@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 app.use(cors({
-  origin: ['https://lazy-puce-tortoise-yoke.cyclic.app'], // Update with the location of your HTML file
+  origin: ['https://lazy-puce-tortoise-yoke.cyclic.app', 'https://moozhan.github.io'], // Update with the location of your HTML file
   credentials: true
 }));
 app.use(cookieParser());
@@ -23,8 +23,8 @@ app.use(session({
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
-    secure: false, // Should be true in production when using HTTPS
-    sameSite: 'lax' // Can be strict or lax depending on your requirements
+    secure: true, // Should be true in production when using HTTPS
+    sameSite: 'None' // Can be strict or lax depending on your requirements
   }
 }));
 
