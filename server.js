@@ -10,7 +10,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const app = express();
-
+app.set('trust proxy', 1); // Trust first proxy
 app.use(cors({
   origin: ['https://lazy-puce-tortoise-yoke.cyclic.app', 'https://moozhan.github.io'], // Update with the location of your HTML file
   credentials: true
