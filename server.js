@@ -72,9 +72,18 @@ app.get('/login', passport.authenticate('auth0', {
   res.redirect('/callback');
 });
 
+// User data endpoint
+app.get('/games', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render('games.ejs', {name: req.user.displayName});
+  } else {
+    res.status(401).json({ error: 'User is not authenticated' });
+  }
+});
+
 // Auth0 callback route
 app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/login' }), (req, res) => {
-  res.redirect('/');
+  res.redirect('/games');
 });
 
 // User data endpoint
