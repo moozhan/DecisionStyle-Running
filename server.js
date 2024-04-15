@@ -1,7 +1,4 @@
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
-}
-
+require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
@@ -12,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 app.use(cors({
-  origin: ['https://moozhan.github.io/testingclient'], // Update with the location of your HTML file
+  origin: ['https://lazy-puce-tortoise-yoke.cyclic.app'], // Update with the location of your HTML file
   credentials: true
 }));
 app.use(cookieParser());
@@ -24,7 +21,7 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: true, // Should be true in production when using HTTPS
-    sameSite: 'none' // Can be strict or lax depending on your requirements
+    sameSite: 'lax' // Can be strict or lax depending on your requirements
   }
 }));
 
