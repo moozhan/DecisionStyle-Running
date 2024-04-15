@@ -23,7 +23,7 @@ app.use(session({
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
-    secure: true, // Should be true in production when using HTTPS
+    secure: false, // Should be true in production when using HTTPS
     sameSite: 'lax' // Can be strict or lax depending on your requirements
   }
 }));
