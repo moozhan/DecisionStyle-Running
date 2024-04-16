@@ -20,7 +20,7 @@ app.set("views", path.join(__dirname, "views"));
 
 app.set('trust proxy', 1); // Trust first proxy
 app.use(cors({
-  origin: ['https://lazy-puce-tortoise-yoke.cyclic.app', 'https://moozhan.github.io'], // Update with the location of your HTML file
+  origin: ['https://lazy-puce-tortoise-yoke.cyclic.app', 'https://moozhan.github.io', 'https://dev-backend.d4id81j7108zr.amplifyapp.com'], // Update with the location of your HTML file
   credentials: true
 }));
 app.use(cookieParser());
@@ -75,7 +75,7 @@ app.get('/login', passport.authenticate('auth0', {
 // User data endpoint
 app.get('/games', (req, res) => {
   if (req.isAuthenticated()) {
-    res.render('games.ejs', {name: req.user.nickname});
+    res.render('games.ejs', {name: JSON.stringify(req.user)});
   } else {
     res.status(401).json({ error: 'User is not authenticated' });
   }
