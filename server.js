@@ -75,7 +75,7 @@ app.get('/login', passport.authenticate('auth0', {
 // User data endpoint
 app.get('/games', (req, res) => {
   if (req.isAuthenticated()) {
-    res.render('games.ejs', {name: JSON.stringify(req.user)});
+    res.render('games.ejs', {name: req.user.nickname});
   } else {
     res.status(401).json({ error: 'User is not authenticated' });
   }
