@@ -5,9 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
-const Auth0Strategy = require('passport-auth0');
 const cookieParser = require('cookie-parser');
-const passport = require('passport');
 
 
 const router = express.Router();
@@ -38,5 +36,7 @@ router.post('/updateData', (req, res) => {
         res.status(401).json({ error: 'User is not authenticated' });
     }
 });
+
+module.exports = router;
 
 
