@@ -8,6 +8,7 @@ const passport = require('passport');
 const Auth0Strategy = require('passport-auth0');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const gameRoutes = require('./routes/gameRoutes.js');
 const path = require('path');
 
 const app = express();
@@ -98,6 +99,8 @@ app.get('/user', (req, res) => {
     res.status(401).json({ error: 'User is not authenticated' });
   }
 });
+
+app.use('/api/game', gameRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server listening on http://localhost:${PORT}`));
