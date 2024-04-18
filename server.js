@@ -10,7 +10,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const gameRoutes = require('./routes/gameRoutes.js');
 const path = require('path');
-
+const mongoose = require('mongoose');
+const User = require('./models/user');
 const app = express();
 // Set EJS as the view engine
 app.set("view engine", "ejs");
@@ -38,6 +39,9 @@ app.use(session({
     sameSite: 'None' // Can be strict or lax depending on your requirements
   }
 }));
+
+//MONGODB
+mongoose.connect(process.env.DATABASE_URL);
 
 passport.use(new Auth0Strategy({
     domain: process.env.AUTH0_DOMAIN,
@@ -84,6 +88,13 @@ app.get('/games', (req, res) => {
 
 // Auth0 callback route
 app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/login' }), (req, res) => {
+  if (req.isAuthenticated()) {
+    User.updateOne({ auth0Id: req.user.id }, (err, user) => {
+      if (err) return res.status(401).json({ error: 'User is not authenticated' });
+      user.email = req.user.email;
+      user.username = req.user.username;
+    }, {upsert:true})
+  }
   res.redirect('/games');
 });
 

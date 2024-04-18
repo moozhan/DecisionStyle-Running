@@ -6,7 +6,7 @@ const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-
+const User = require('../models/user');
 
 const router = express.Router();
 
@@ -31,7 +31,10 @@ router.use(session({
 
 router.post('/updateData', (req, res) => {
     if (req.isAuthenticated()) {
+
         res.body = {'user': req.user, 'data': req.body}
+        const id = req.user.id;
+        User.updateOne({ auth0Id: id }, {$push: {"experiments.$.logJson": req.body}});
     } else {
         res.status(401).json({ error: 'User is not authenticated' });
     }
