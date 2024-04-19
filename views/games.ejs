@@ -5,51 +5,37 @@
         <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
+    <%- include('partials/navbar'); %>
     <!--Using Variable-->
-    <div class="container-fluid">
-        <h1>Let's Create Your Decision Profile <%= name%></h1>
+    <div class="container-fluid" style="width: 80%; margin-top:5em;">
+        <h1>Get to Know Your Decision-Making Style</h1>
         <p>Below are series of test for finding out about your decision-making style. Each game or test target specific aspect of decision-making; one about how far ahead you plan, another about whether you are emotional decision-maker and the other about indecision.</p>
-        <div class="row">
-            <div class="col-md-3 border-dot" style="background-color:azure;" >
-                <p>first div</p>
+        <div class="row mx-auto" style="width: 100%;">
+            <div class="col" style="padding: 2em;">
+                <div class="row border-dot" style="padding: 1em;">
+                    <div class="col-sm-4">
+                        <img src="/images/four.jpg" style="width:100%;"/>
+                    </div>
+                    <div class="col-sm-8" >
+                        <h3>Four in a Row Game</h3>
+                        <p>This is to test how good you are in planning your next steps. How many steps ahead you plan for? </p>
+                        <p>You play a 4 in a row (a.k.a connect four) against a robot. </p>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-3 border-dot">
-                <p>first div</p>
-            </div>
-            <div class="col-md-3 border-dot">
-                <p>first div</p>
-            </div>
-            <div class="col-md-3 border-dot">
-                <p>first div</p>
-            </div>
-            <div class="col-md-3 border-dot" style="background-color:azure;" >
-                <p>first div</p>
-            </div>
-            <div class="col-md-3 border-dot">
-                <p>first div</p>
-            </div>
-            <div class="col-md-3 border-dot">
-                <p>first div</p>
-            </div>
-            <div class="col-md-3 border-dot">
-                <p>first div</p>
-            </div>
-            <div class="col-md-3 border-dot" style="background-color:azure;" >
-                <p>first div</p>
-            </div>
-            <div class="col-md-3 border-dot">
-                <p>first div</p>
-            </div>
-            <div class="col-md-3 border-dot">
-                <p>first div</p>
-            </div>
-            <div class="col-md-3 border-dot">
-                <p>first div</p>
+            <div class="col" style="padding: 2em;">
+                <div class="row border-dot" style="padding: 1em;">
+                    <div class="col-sm-4">
+                        <img src="/images/indecision.jpg" style="width:100%;"/>
+                    </div>
+                    <div class="col-sm-8">
+                        <h3>Indecision Test</h3>
+                        <p>This is to test how good you are in planning your next steps. How many steps ahead you plan for? </p>
+                        <p>You play a 4 in a row (a.k.a connect four) against a robot. </p>
+                    </div>
+                </div>            
             </div>
         </div>
-        <a href="/logout">Logout</a>
-
     </div>
-
 </body>
 </html>

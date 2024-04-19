@@ -28,3 +28,7 @@ body{
 .border-dot{
     border: 1px black dashed;
 }
+
+a {
+    color: black;
+}

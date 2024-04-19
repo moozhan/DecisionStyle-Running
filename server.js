@@ -89,12 +89,16 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/games', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render('games.ejs', { name: JSON.stringify(req.user) });
-  } else {
-    res.status(401).json({ error: 'User is not authenticated' });
-  }
+  res.render('games.ejs');
 });
+
+// app.get('/games', (req, res) => {
+//   if (req.isAuthenticated()) {
+//     res.render('games.ejs', { name: JSON.stringify(req.user) });
+//   } else {
+//     res.status(401).json({ error: 'User is not authenticated' });
+//   }
+// });
 
 app.get('/profile', requiresAuth(), (req, res) => {
   res.send(JSON.stringify(req.oidc.user));
