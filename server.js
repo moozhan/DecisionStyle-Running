@@ -79,7 +79,7 @@ passport.deserializeUser((user, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-// all the pages 
+//================================================== all the pages 
 app.get('/', (req, res) => {
   res.render('index.ejs');
 });
@@ -89,16 +89,12 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/games', (req, res) => {
-  res.render('games.ejs');
+  if (req.isAuthenticated()) {
+    res.render('games.ejs', { name: JSON.stringify(req.user) });
+  } else {
+    res.status(401).json({ error: 'User is not authenticated' });
+  }
 });
-
-// app.get('/games', (req, res) => {
-//   if (req.isAuthenticated()) {
-//     res.render('games.ejs', { name: JSON.stringify(req.user) });
-//   } else {
-//     res.status(401).json({ error: 'User is not authenticated' });
-//   }
-// });
 
 app.get('/profile', requiresAuth(), (req, res) => {
   res.send(JSON.stringify(req.oidc.user));
@@ -117,6 +113,9 @@ app.get('/user', (req, res) => {
   }
 });
 
+
+
+//============================================== All Auth0 Routes
 // Auth0 login route
 app.get('/login', passport.authenticate('auth0', {
   scope: 'openid email profile'
