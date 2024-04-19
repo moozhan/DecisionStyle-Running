@@ -89,6 +89,14 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/games', (req, res) => {
+  res.render('games.ejs');
+});
+
+app.get('/games/indecision', (req, res) => {
+  res.render('indecision.ejs');
+});
+
+app.get('/games', (req, res) => {
   if (req.isAuthenticated()) {
     res.render('games.ejs', { name: JSON.stringify(req.user) });
   } else {
