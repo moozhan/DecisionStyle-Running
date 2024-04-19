@@ -6,9 +6,14 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const Auth0Strategy = require('passport-auth0');
+const mongoose = require('mongoose');
+const gameRoutes = require('./routes/gameRoutes');
+const bcrypt = require('bcrypt');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const { requiresAuth } = require('express-openid-connect');
+
 
 const app = express();
 // Set EJS as the view engine
@@ -39,6 +44,19 @@ app.use(session({
   }
 }));
 
+
+// DB Config
+const db = process.env.DB_CONNECTION;
+const options = {
+  serverSelectionTimeoutMS: 5000 // Shorten the timeout to fail faster if not connected
+};
+// Connect to MongoDB
+mongoose
+  .connect(db, options)
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log(err));
+
+
 passport.use(new Auth0Strategy({
   domain: process.env.AUTH0_DOMAIN,
   clientID: process.env.AUTH0_CLIENT_ID,
@@ -61,7 +79,7 @@ passport.deserializeUser((user, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Serve the HTML file as the root page
+// all the pages 
 app.get('/', (req, res) => {
   res.render('index.ejs');
 });
@@ -70,18 +88,6 @@ app.get('/about', (req, res) => {
   res.render('about.ejs');
 });
 
-// app.get('/games', (req, res) => {
-//   res.render('games.ejs');
-// });
-
-// Auth0 login route
-app.get('/login', passport.authenticate('auth0', {
-  scope: 'openid email profile'
-}), (req, res) => {
-  res.redirect('/callback');
-});
-
-// User data endpoint
 app.get('/games', (req, res) => {
   if (req.isAuthenticated()) {
     res.render('games.ejs', { name: JSON.stringify(req.user) });
@@ -90,9 +96,8 @@ app.get('/games', (req, res) => {
   }
 });
 
-// Auth0 callback route
-app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/login' }), (req, res) => {
-  res.redirect('/games');
+app.get('/profile', requiresAuth(), (req, res) => {
+  res.send(JSON.stringify(req.oidc.user));
 });
 
 // User data endpoint
@@ -107,6 +112,19 @@ app.get('/user', (req, res) => {
     res.status(401).json({ error: 'User is not authenticated' });
   }
 });
+
+// Auth0 login route
+app.get('/login', passport.authenticate('auth0', {
+  scope: 'openid email profile'
+}), (req, res) => {
+  res.redirect('/callback');
+});
+
+// Auth0 callback route
+app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/login' }), (req, res) => {
+  res.redirect('/games');
+});
+
 app.get('/logout', (req, res) => {
   console.log("Logging out user...");
   req.logout(function (err) {
