@@ -16,6 +16,7 @@ app.set("view engine", "ejs");
 
 // Set the views directory
 app.set("views", path.join(__dirname, "views"));
+app.use(express.static('public'));
 
 
 app.set('trust proxy', 1); // Trust first proxy
@@ -39,12 +40,12 @@ app.use(session({
 }));
 
 passport.use(new Auth0Strategy({
-    domain: process.env.AUTH0_DOMAIN,
-    clientID: process.env.AUTH0_CLIENT_ID,
-    clientSecret: process.env.AUTH0_CLIENT_SECRET,
-    callbackURL: process.env.AUTH0_CALLBACK_URL
-  },
-  function(accessToken, refreshToken, extraParams, profile, done) {
+  domain: process.env.AUTH0_DOMAIN,
+  clientID: process.env.AUTH0_CLIENT_ID,
+  clientSecret: process.env.AUTH0_CLIENT_SECRET,
+  callbackURL: process.env.AUTH0_CALLBACK_URL
+},
+  function (accessToken, refreshToken, extraParams, profile, done) {
     return done(null, profile);
   }
 ));
@@ -65,6 +66,14 @@ app.get('/', (req, res) => {
   res.render('index.ejs');
 });
 
+app.get('/about', (req, res) => {
+  res.render('about.ejs');
+});
+
+// app.get('/games', (req, res) => {
+//   res.render('games.ejs');
+// });
+
 // Auth0 login route
 app.get('/login', passport.authenticate('auth0', {
   scope: 'openid email profile'
@@ -75,7 +84,7 @@ app.get('/login', passport.authenticate('auth0', {
 // User data endpoint
 app.get('/games', (req, res) => {
   if (req.isAuthenticated()) {
-    res.render('games.ejs', {name: JSON.stringify(req.user)});
+    res.render('games.ejs', { name: JSON.stringify(req.user) });
   } else {
     res.status(401).json({ error: 'User is not authenticated' });
   }
@@ -97,6 +106,28 @@ app.get('/user', (req, res) => {
   } else {
     res.status(401).json({ error: 'User is not authenticated' });
   }
+});
+app.get('/logout', (req, res) => {
+  console.log("Logging out user...");
+  req.logout(function (err) {
+    if (err) { return next(err); }
+
+    let returnTo = `${req.protocol}://${req.get('host')}`;
+    const port = req.socket.localPort;
+    if (port !== undefined && port !== 80 && port !== 443) {
+      returnTo = process.env.NODE_ENV === 'production' ? returnTo : `${returnTo}:${port}`;
+    }
+
+    const logoutURL = new URL(`https://${process.env.AUTH0_DOMAIN}/v2/logout`);
+    const searchString = new URLSearchParams({
+      client_id: process.env.AUTH0_CLIENT_ID,
+      returnTo: returnTo
+    });
+    logoutURL.search = searchString.toString();
+
+    console.log("Redirecting to Auth0 logout URL:", logoutURL.toString());
+    res.redirect(logoutURL.toString());
+  });
 });
 
 const PORT = process.env.PORT || 3000;
