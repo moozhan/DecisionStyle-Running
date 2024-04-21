@@ -8,8 +8,7 @@ const passport = require('passport');
 const Auth0Strategy = require('passport-auth0');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
-
-// const gameRoutes = require('./routes/gameRoutes');
+const gameRoutes = require('./routes/gameRoutes');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
