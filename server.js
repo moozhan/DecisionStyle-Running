@@ -126,7 +126,7 @@ app.post('/games/indecision',  (req, res) => {
     }
     const id = req.user.id;
     User.updateOne({ auth0Id: id }, {$push: {"indecision": indecision}});
-    res.render('/games', {indecision: 'done'});
+    res.redirect('/games');
   } else {
     res.status(401).json({ error: 'User is not authenticated' });
   }
@@ -167,35 +167,29 @@ app.get('/login', passport.authenticate('auth0', {
   res.redirect('/callback');
 });
 
-// Auth0 callback route
-app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/login' }), (req, res) => {
-  // Search for an existing user with the given Auth0 ID
-  User.findOne({ auth0Id: req.user.id }, (err, existingUser) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).send('An error occurred while checking user information');
-    }
+app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/login' }), async (req, res) => {
+  try {
+    // Await the response from findOne to check if user already exists
+    const existingUser = await User.findOne({ auth0Id: req.user.id });
 
     if (existingUser) {
-      // User already exists, so we can redirect to the games page directly
-      return res.redirect('/games');
+      // User already exists, so redirect to the games page
+      res.redirect('games');
     } else {
       // User does not exist, create a new user
       const newUser = new User({
         auth0Id: req.user.id,
       });
 
-      newUser.save()
-        .then(user => {
-          console.log('New user added:', user);
-          res.redirect('/games');
-        })
-        .catch(err => {
-          console.log('Error saving new user:', err);
-          res.status(500).send('Error creating new user');
-        });
+      // Save the new user and then redirect
+      await newUser.save();
+      console.log('New user added:', newUser);
+      res.redirect('games');
     }
-  });
+  } catch (err) {
+    console.log('Error during user lookup or creation:', err);
+    res.status(500).send('An error occurred during user processing');
+  }
 });
 
 app.get('/logout', (req, res) => {
