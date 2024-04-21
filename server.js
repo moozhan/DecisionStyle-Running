@@ -38,8 +38,6 @@ app.use(cookieParser());
 // DB Config
 const db = process.env.DB_CONNECTION;
 const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
   serverSelectionTimeoutMS: 10000, // Extend the timeout to 10 seconds
   socketTimeoutMS: 45000, // Increase the socket timeout to give more flexibility
 };
