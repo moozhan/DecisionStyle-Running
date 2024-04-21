@@ -55,7 +55,11 @@ app.use(auth({
   clientSecret: process.env.AUTH0_CLIENT_SECRET,
   secret: process.env.SESSION_SECRET,
   authRequired: false,
-  auth0Logout: true
+  auth0Logout: true,
+  afterCallback: (req, res, session) => {
+    // Directly redirect to post-login to handle user ID storage
+    res.redirect('/post-login');
+  }
 }));
 
 const db = process.env.DB_CONNECTION;
@@ -124,7 +128,7 @@ app.get('/user', requiresAuth(), (req, res) => {
   });
 });
 
-app.get('/login', (req, res) => req.oidc.login({ returnTo: '/games' }));
+app.get('/login', (req, res) => req.oidc.login({ returnTo: '/post-login' }));
 
 app.get('/logout', (req, res) => {
   req.oidc.logout({
