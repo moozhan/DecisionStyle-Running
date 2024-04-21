@@ -11,21 +11,32 @@
         <h1>Get to Know Your Decision-Making Style</h1>
         <p>Below are series of test for finding out about your decision-making style. Each game or test target specific aspect of decision-making; one about how far ahead you plan, another about whether you are emotional decision-maker and the other about indecision.</p>
         <div class="mx-auto" style="width: 80%; ">
-        <form>
+        <form action="/games/indecision" method="POST">
                 <div class="form-group row">
-                  <label for="0" class="col col-form-label">I try to put off making decisions.</label>
-                    <input type="range" class="col form-control" id="0" name="temp" list="markers">
+                  <label for="zero" class="col col-form-label">I try to put off making decisions.</label>
+                    <input type="range" step="1" class="col form-control" id="zero" name="zero" list="markers">
                     <datalist id="markers">
-                        <option value="0"></option>
-                        <option value="25"></option>
-                        <option value="50"></option>
-                        <option value="75"></option>
-                        <option value="100"></option>
+                        <option value="-2" label="-2" step="1"></option>
+                        <option value="-1" label="-1" step="1"></option>
+                        <option value="0" label="0" step="1"></option>
+                        <option value="1" label="1" step="1"></option>
+                        <option value="2" label="2" step="1"></option>
                       </datalist>
                 </div>
                 <div class="form-group row">
-                    <label for="1" class="col col-form-label">I always know exactly what I want.</label>
-                      <input type="range" class="col form-control" id="1" name="1" list="markers">
+                    <label for="one" class="col col-form-label">I always know exactly what I want.</label>
+                      <input type="range" class="col form-control" id="one" name="one" list="markers">
+                      <datalist id="markers">
+                        <option value="-2" label="-2" step="1"></option>
+                        <option value="-1" label="-1" step="1"></option>
+                        <option value="0" label="0" step="1"></option>
+                        <option value="1" label="1" step="1"></option>
+                        <option value="2" label="2" step="1"></option>
+                        </datalist>
+                  </div>
+                  <div class="form-group row">
+                    <label for="two" class="col col-form-label">I find it easy to make decisions.</label>
+                      <input type="range" class="col form-control" id="two" name="two" list="markers">
                       <datalist id="markers">
                           <option value="0"></option>
                           <option value="25"></option>
@@ -35,8 +46,8 @@
                         </datalist>
                   </div>
                   <div class="form-group row">
-                    <label for="2" class="col col-form-label">I find it easy to make decisions.</label>
-                      <input type="range" class="col form-control" id="2" name="2" list="markers">
+                    <label for="three" class="col col-form-label">I have a hard time planning my free time.</label>
+                      <input type="range" class="col form-control" id="three" name="three" list="markers">
                       <datalist id="markers">
                           <option value="0"></option>
                           <option value="25"></option>
@@ -46,8 +57,8 @@
                         </datalist>
                   </div>
                   <div class="form-group row">
-                    <label for="3" class="col col-form-label">I have a hard time planning my free time.</label>
-                      <input type="range" class="col form-control" id="3" name="3" list="markers">
+                    <label for="four" class="col col-form-label">I like to be in a position to make decisions.</label>
+                      <input type="range" class="col form-control" id="four" name="four" list="markers">
                       <datalist id="markers">
                           <option value="0"></option>
                           <option value="25"></option>
@@ -57,8 +68,8 @@
                         </datalist>
                   </div>
                   <div class="form-group row">
-                    <label for="4" class="col col-form-label">I like to be in a position to make decisions.</label>
-                      <input type="range" class="col form-control" id="4" name="4" list="markers">
+                    <label for="five" class="col col-form-label">Once I make a decision, I feel fairly confident that it is a good one.</label>
+                      <input type="range" class="col form-control" id="five" name="five" list="markers">
                       <datalist id="markers">
                           <option value="0"></option>
                           <option value="25"></option>
@@ -68,8 +79,8 @@
                         </datalist>
                   </div>
                   <div class="form-group row">
-                    <label for="5" class="col col-form-label">Once I make a decision, I feel fairly confident that it is a good one.</label>
-                      <input type="range" class="col form-control" id="5" name="5" list="markers">
+                    <label for="six" class="col col-form-label">When ordering from a menu, I usually find it difficult to decide what to get.</label>
+                      <input type="range" class="col form-control" id="six" name="six" list="markers">
                       <datalist id="markers">
                           <option value="0"></option>
                           <option value="25"></option>
@@ -79,8 +90,8 @@
                         </datalist>
                   </div>
                   <div class="form-group row">
-                    <label for="6" class="col col-form-label">When ordering from a menu, I usually find it difficult to decide what to get.</label>
-                      <input type="range" class="col form-control" id="6" name="6" list="markers">
+                    <label for="seven" class="col col-form-label">I usually make decisions quickly.</label>
+                      <input type="range" class="col form-control" id="seven" name="seven" list="markers">
                       <datalist id="markers">
                           <option value="0"></option>
                           <option value="25"></option>
@@ -90,8 +101,8 @@
                         </datalist>
                   </div>
                   <div class="form-group row">
-                    <label for="7" class="col col-form-label">I usually make decisions quickly.</label>
-                      <input type="range" class="col form-control" id="7" name="7" list="markers">
+                    <label for="eight" class="col col-form-label">Once I make a decision, I stop worrying about it.</label>
+                      <input type="range" class="col form-control" id="eight" name="eight" list="markers">
                       <datalist id="markers">
                           <option value="0"></option>
                           <option value="25"></option>
@@ -101,8 +112,8 @@
                         </datalist>
                   </div>
                   <div class="form-group row">
-                    <label for="8" class="col col-form-label">Once I make a decision, I stop worrying about it.</label>
-                      <input type="range" class="col form-control" id="8" name="8" list="markers">
+                    <label for="nine" class="col col-form-label">I become anxious when making a decision.</label>
+                      <input type="range" class="col form-control" id="nine" name="nine" list="markers">
                       <datalist id="markers">
                           <option value="0"></option>
                           <option value="25"></option>
@@ -112,8 +123,8 @@
                         </datalist>
                   </div>
                   <div class="form-group row">
-                    <label for="9" class="col col-form-label">I become anxious when making a decision.</label>
-                      <input type="range" class="col form-control" id="9" name="9" list="markers">
+                    <label for="ten" class="col col-form-label">I often worry about making the wrong choice.</label>
+                      <input type="range" class="col form-control" id="ten" name="ten" list="markers">
                       <datalist id="markers">
                           <option value="0"></option>
                           <option value="25"></option>
@@ -123,8 +134,8 @@
                         </datalist>
                   </div>
                   <div class="form-group row">
-                    <label for="10" class="col col-form-label">I often worry about making the wrong choice.</label>
-                      <input type="range" class="col form-control" id="10" name="10" list="markers">
+                    <label for="eleven" class="col col-form-label">After I have chosen or decided something, I often believe I've made the wrong choice or decision.</label>
+                      <input type="range" class="col form-control" id="eleven" name="eleven" list="markers">
                       <datalist id="markers">
                           <option value="0"></option>
                           <option value="25"></option>
@@ -134,8 +145,8 @@
                         </datalist>
                   </div>
                   <div class="form-group row">
-                    <label for="11" class="col col-form-label">After I have chosen or decided something, I often believe I've made the wrong choice or decision.</label>
-                      <input type="range" class="col form-control" id="11" name="11" list="markers">
+                    <label for="twelve" class="col col-form-label">I do not get assignments done on time because I cannot decide what to do first.</label>
+                      <input type="range" class="col form-control" id="twelve" name="twelve" list="markers">
                       <datalist id="markers">
                           <option value="0"></option>
                           <option value="25"></option>
@@ -145,8 +156,8 @@
                         </datalist>
                   </div>
                   <div class="form-group row">
-                    <label for="12" class="col col-form-label">I do not get assignments done on time because I cannot decide what to do first.</label>
-                      <input type="range" class="col form-control" id="12" name="12" list="markers">
+                    <label for="thirteen" class="col col-form-label">I have trouble completing assignments because I can't prioritize what is most important.</label>
+                      <input type="range" class="col form-control" id="thirteen" name="thirteen" list="markers">
                       <datalist id="markers">
                           <option value="0"></option>
                           <option value="25"></option>
@@ -156,8 +167,8 @@
                         </datalist>
                   </div>
                   <div class="form-group row">
-                    <label for="13" class="col col-form-label">I have trouble completing assignments because I can't prioritize what is most important.</label>
-                      <input type="range" class="col form-control" id="13" name="13" list="markers">
+                    <label for="fourteen" class="col col-form-label">It seems that deciding on the most trivial thing takes me a long time.</label>
+                      <input type="range" class="col form-control" id="fourteen" name="fourteen" list="markers">
                       <datalist id="markers">
                           <option value="0"></option>
                           <option value="25"></option>
@@ -166,17 +177,8 @@
                           <option value="100"></option>
                         </datalist>
                   </div>
-                  <div class="form-group row">
-                    <label for="14" class="col col-form-label">It seems that deciding on the most trivial thing takes me a long time.</label>
-                      <input type="range" class="col form-control" id="14" name="14" list="markers">
-                      <datalist id="markers">
-                          <option value="0"></option>
-                          <option value="25"></option>
-                          <option value="50"></option>
-                          <option value="75"></option>
-                          <option value="100"></option>
-                        </datalist>
-                  </div>
+                  <button type="submit" class="btn btn-default">Submit</button>
+
               </form>
             </div>
     </div>
