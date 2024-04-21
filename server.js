@@ -140,6 +140,26 @@ app.post('/games/indecision',  (req, res) => {
   }
 });
 
+app.post('/updateData', (req, res) => {
+  if (req.isAuthenticated()) {
+
+      res.body = {'user': req.user, 'data': req.body}
+      const id = req.user.id;
+      User.updateOne({ auth0Id: id }, {$push: {"experiments.$.logJson": req.body}})
+      .then(result => {
+        console.log('Update successful', result);
+        res.redirect('/games');
+      })
+      .catch(error => {
+        console.error('Error updating user', error);
+        res.redirect('/games');
+      }); 
+  } else {
+      res.status(401).json({ error: 'User is not authenticated' });
+  }
+});
+
+
 app.get('/games', (req, res) => {
   if (req.isAuthenticated()) {
     res.render('games.ejs');
