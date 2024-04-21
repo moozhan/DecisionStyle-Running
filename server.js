@@ -12,7 +12,7 @@ const MongoStore = require('connect-mongo');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const { auth } = require('express-openid-connect');
+// const { auth } = require('express-openid-connect');
 const User = require('./models/user');
 const bodyParser = require('body-parser');
 
@@ -48,14 +48,14 @@ app.use(session({
   }
 }));
 
-app.use(auth({
-  issuerBaseURL: process.env.AUTH0_DOMAIN,
-  baseURL: 'http://localhost:3000',
-  clientID: process.env.AUTH0_CLIENT_ID,
-  secret: process.env.SESSION_SECRET,
-  authRequired: false,
-  auth0Logout: true
-}));
+// app.use(auth({
+//   issuerBaseURL: process.env.AUTH0_DOMAIN,
+//   baseURL: 'http://localhost:3000',
+//   clientID: process.env.AUTH0_CLIENT_ID,
+//   secret: process.env.SESSION_SECRET,
+//   authRequired: false,
+//   auth0Logout: true
+// }));
 
 // DB Config
 const db = process.env.DB_CONNECTION;
@@ -109,7 +109,7 @@ app.get('/games/indecision', (req, res) => {
   }
 });
 
-app.post('/games/indecision', requiresAuth(), (req, res) => {
+app.post('/games/indecision', (req, res) => {
   if (req.isAuthenticated()) {
     const indecision = [
       req.body.zero,
