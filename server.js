@@ -12,7 +12,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const { requiresAuth } = require('express-openid-connect');
-// const User = require('./models/user');
+const User = require('./models/user');
 
 
 const app = express();
