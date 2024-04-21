@@ -88,14 +88,13 @@ async function storeUserId(req, res, next) {
   }
 }
 
+app.get('/callback', requiresAuth(), (req, res) => {
+  res.redirect('/post-login');
+});
 // Route to handle redirection after login and store user ID
 app.get('/post-login', requiresAuth(), storeUserId, (req, res) => {
   res.redirect('/games');
 });
-app.get('/post-login', requiresAuth(), storeUserId, (req, res) => {
-  res.redirect('/games');
-});
-
 app.get('/', (req, res) => res.render('index.ejs'));
 app.get('/about', (req, res) => res.render('about.ejs'));
 
