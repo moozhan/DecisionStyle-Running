@@ -46,6 +46,7 @@ app.use(session({
   }
 }));
 
+
 app.use(auth({
   issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`,
   baseURL: 'https://gleaming-sarong-crab.cyclic.app', // Make sure this is the actual URL from where your app is served in production
@@ -53,11 +54,8 @@ app.use(auth({
   secret: process.env.SESSION_SECRET,
   authRequired: false,
   auth0Logout: true,
-  idpLogout: true,
-  postLoginRedirectUri: process.env.BASE_URL + '/games' // Redirect to /games after login
-
+  redirectUriPath: '/games', // Set this to redirect to /games after login
 }));
-
 
 // DB Config
 const db = process.env.DB_CONNECTION;
