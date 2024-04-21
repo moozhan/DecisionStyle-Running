@@ -127,6 +127,7 @@ app.post('/games/indecision',  (req, res) => {
       req.body.thirteen,
       req.body.fourteen
     ]
+    console.log(indecision);
     const id = req.user.id;
     User.updateOne({ auth0Id: id }, { $push: { "indecision": indecision } })
     .then(result => {
