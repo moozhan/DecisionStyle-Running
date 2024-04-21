@@ -53,6 +53,9 @@ app.use(auth({
   secret: process.env.SESSION_SECRET,
   authRequired: false,
   auth0Logout: true,
+  idpLogout: true,
+  postLoginRedirectUri: process.env.BASE_URL + '/games' // Redirect to /games after login
+
 }));
 
 
