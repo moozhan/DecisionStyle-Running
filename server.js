@@ -39,9 +39,13 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: db, // Your MongoDB connection string
+    mongoOptions: options
+  }),
   cookie: {
     httpOnly: true,
-    secure: true, // Should be true in production when using HTTPS
+    secure: true, // Ensure cookies are sent over HTTPS in production
     sameSite: 'None' // Can be strict or lax depending on your requirements
   }
 }));
