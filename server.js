@@ -66,8 +66,7 @@ app.use(auth({
       const existingUser = await User.findOne({ auth0Id: user.sub });
       if (!existingUser) {
         const newUser = new User({
-          auth0Id: user.sub,
-          email: user.email // assuming the email is available, adjust as per your session data
+          auth0Id: user.sub
         });
         await newUser.save();
       }
