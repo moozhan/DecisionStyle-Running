@@ -48,6 +48,14 @@ app.use(session({
   }
 }));
 
+app.use(requiresAuth({
+  issuerBaseURL: process.env.AUTH0_DOMAIN,
+  baseURL: 'https://gleaming-sarong-crab.cyclic.app',
+  clientID: process.env.AUTH0_CLIENT_ID,
+  secret: process.env.SESSION_SECRET,
+  authRequired: false,
+  auth0Logout: true
+}));
 
 // DB Config
 const db = process.env.DB_CONNECTION;
