@@ -101,7 +101,7 @@ app.get('/games/indecision', (req, res) => {
   }
 });
 
-app.post('/games/indecision', requiresAuth(),  (req, res) => {
+app.post('/games/indecision', requiresAuth(), (req, res) => {
   if (req.isAuthenticated()) {
     const indecision = [
       req.body.zero,
@@ -119,14 +119,20 @@ app.post('/games/indecision', requiresAuth(),  (req, res) => {
       req.body.twelve,
       req.body.thirteen,
       req.body.fourteen
-    ]
+    ];
     const id = req.user.id;
-    User.updateOne({ auth0Id: id }, {$push: {"indecision": indecision}});
-    res.render('/games', {indecision: 'done'});
+    User.updateOne({ auth0Id: id }, {$push: {"indecision": indecision}}, function(err, result) {
+      if (err) {
+        console.error("Error updating user:", err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+      res.redirect('/games');
+    });
   } else {
     res.status(401).json({ error: 'User is not authenticated' });
   }
 });
+
 
 app.get('/games', (req, res) => {
   if (req.isAuthenticated()) {
