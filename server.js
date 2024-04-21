@@ -91,7 +91,7 @@ app.get('/about', (req, res) => {
 });
 
 
-app.get('/games/indecision', (req, res) => {
+app.get('/style/indecision', (req, res) => {
   if (req.isAuthenticated()) {
     res.render('indecision.ejs');
   } else {
@@ -99,7 +99,7 @@ app.get('/games/indecision', (req, res) => {
   }
 });
 
-app.post('/games/indecision', (req, res) => {
+app.post('/style/indecision', (req, res) => {
   if (req.isAuthenticated()) {
     const indecision = {
       0: req.body.zero,
