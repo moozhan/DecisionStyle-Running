@@ -3,7 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const express = require('express');
-const session = require('express-session');
+const session = require('cookie-session');
 const passport = require('passport');
 const Auth0Strategy = require('passport-auth0');
 const mongoose = require('mongoose');
