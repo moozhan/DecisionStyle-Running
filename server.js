@@ -53,10 +53,29 @@ app.use(auth({
   baseURL: process.env.BASE_URL,
   clientID: process.env.AUTH0_CLIENT_ID,
   clientSecret: process.env.AUTH0_CLIENT_SECRET,
+  secret: process.env.SESSION_SECRET,
   authRequired: false,
   auth0Logout: true,
   idTokenSigningAlg: 'RS256',
-  secret: process.env.SESSION_SECRET
+  afterCallback: async (req, res, session) => {
+    const { user } = session;
+    try {
+      // Check if the user already exists in the database
+      const existingUser = await User.findOne({ auth0Id: user.sub });
+      if (!existingUser) {
+        // If the user does not exist, create a new user
+        const newUser = new User({
+          auth0Id: user.sub,
+        });
+        await newUser.save();
+      }
+      // Redirect to /games after handling the user data
+      res.redirect('/games');
+    } catch (err) {
+      console.error("Error saving user:", err);
+      res.status(500).send("Failed to handle user data after login.");
+    }
+  }
 }));
 
 const db = process.env.DB_CONNECTION;
@@ -99,7 +118,9 @@ app.get('/user', requiresAuth(), (req, res) => {
 app.get('/login', (req, res) => req.oidc.login({ returnTo: '/games' }));
 
 app.get('/logout', (req, res) => {
-  req.oidc.logout({ returnTo: req.protocol + '://' + req.get('host') });
+  req.oidc.logout({
+    returnTo: '/',
+  });
 });
 
 const PORT = process.env.PORT || 3000;
