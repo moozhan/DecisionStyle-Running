@@ -78,6 +78,14 @@ app.get('/about', (req, res) => {
   res.render('about.ejs');
 });
 
+app.get('/callback', (req, res) => {
+  // Handle the authentication response here
+  // You can redirect based on the user's intended destination or other logic
+  const returnTo = req.session.returnTo || '/games';
+  delete req.session.returnTo;
+  res.redirect(returnTo);
+});
+
 app.get('/games/indecision', requiresAuth(), (req, res) => {
   res.render('indecision.ejs');
 });
