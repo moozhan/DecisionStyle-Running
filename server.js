@@ -124,7 +124,6 @@ app.post('/games/indecision', (req, res) => {
   }
 });
 
-
 app.get('/games', (req, res) => {
   if (req.isAuthenticated()) {
     res.render('games.ejs');
