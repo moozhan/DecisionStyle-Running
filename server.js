@@ -48,13 +48,14 @@ app.use(session({
 }));
 
 app.use(auth({
-  issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`,
-  baseURL: process.env.BASE_URL, // Ensure this is the correct URL where your app is hosted
-  clientID: process.env.AUTH0_CLIENT_ID,
-  clientSecret: process.env.AUTH0_CLIENT_SECRET, // 'secret' was a typo; it should be 'clientSecret'
-  authRequired: false,
-  auth0Logout: true,
-  redirectUriPath: '/callback', // This is where Auth0 will redirect users after login
+  issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`,  // URL for your Auth0 tenant
+  baseURL: process.env.BASE_URL,  // The base URL of your application
+  clientID: process.env.AUTH0_CLIENT_ID,  // Your Auth0 client ID
+  clientSecret: process.env.AUTH0_CLIENT_SECRET,  // Your Auth0 client secret
+  authRequired: false,  // Whether authentication is required for all routes
+  auth0Logout: true,  // Enables Auth0-based logout functionality
+  secret: process.env.SESSION_SECRET,  // A secret used to encrypt the session cookie
+  redirectUriPath: '/callback'  // Path to handle the response from Auth0 (not required if using the default '/callback')
 }));
 
 
