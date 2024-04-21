@@ -54,7 +54,7 @@ app.use(auth({
   authRequired: false,
   auth0Logout: true,
   idpLogout: true,
-  postLoginRedirectUri: '/games', // Redirect to /games after login
+  postLoginRedirectUri: 'https://gleaming-sarong-crab.cyclic.app/callback', // Redirect to /games after login
 
 }));
 
