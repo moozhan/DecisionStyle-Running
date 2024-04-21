@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-// const Experiment = require("../models/experiment");
+const Experiment = require("../models/experiment");
 // const Indecision = require("../models/indecision");
 
 
