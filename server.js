@@ -88,13 +88,44 @@ app.get('/about', (req, res) => {
   res.render('about.ejs');
 });
 
-// app.get('/games', (req, res) => {
-//   res.render('games.ejs');
-// });
 
 app.get('/games/indecision', (req, res) => {
-  res.render('indecision.ejs');
+  if (req.isAuthenticated()) {
+    res.render('indecision.ejs');
+  } else {
+    res.status(401).json({ error: 'User is not authenticated' });
+  }
 });
+
+app.post('/games/indecision', (req, res) => {
+  if (req.isAuthenticated()) {
+    const indecision = {
+      0: req.body.0,
+      1: req.body.1,
+      2: req.body.2,
+      3: req.body.3,
+      4: req.body.4,
+      5: req.body.5,
+      6: req.body.6,
+      7: req.body.7,
+      8: req.body.8,
+      9: req.body.9,
+      10: req.body.10,
+      11: req.body.11,
+      12: req.body.12,
+      13: req.body.13,
+      14: req.body.14,
+
+    }
+    res.body = {'data': req.body};
+    const id = req.user.id;
+    User.updateOne({ auth0Id: id }, {$push: {"indecision": req.body}});
+    res.render('/games', {indecision: 'done'});
+  } else {
+    res.status(401).json({ error: 'User is not authenticated' });
+  }
+});
+
 
 app.get('/games', (req, res) => {
   if (req.isAuthenticated()) {
@@ -128,19 +159,19 @@ app.get('/user', (req, res) => {
 app.get('/login', passport.authenticate('auth0', {
   scope: 'openid email profile'
 }), (req, res) => {
-  const newUser = new User({
-    auth0Id: req.user.id,
-    indecision
-  });
-
-  newUser.save()
-    .then(user => res.json(user))
-    .catch(err => console.log(err));
   res.redirect('/callback');
 });
 
 // Auth0 callback route
 app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/login' }), (req, res) => {
+  const newUser = new User({
+    auth0Id: req.user.id,
+  });
+
+  newUser.save()
+    .then(user => res.json(user))
+    .catch(err => console.log(err));
+    
   res.redirect('/games');
 });
 

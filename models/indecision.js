@@ -18,7 +18,6 @@ const indecisionSchema = new mongoose.Schema({
     12: { type: Number, required: true},
     13: { type: Number, required: true},
     14: { type: Number, required: true},
-    15: { type: Number, required: true},
 
 });    
 
