@@ -46,17 +46,17 @@ app.use(session({
     sameSite: 'None'
   }
 }));
+
 app.use(auth({
   issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`, // Your Auth0 domain
-  baseURL: process.env.BASE_URL, // The base URL of your app
+  baseURL: process.env.BASE_URL, // The base URL of your app, make sure it's correctly set in your environment variables
   clientID: process.env.AUTH0_CLIENT_ID, // Your Auth0 Client ID
   clientSecret: process.env.AUTH0_CLIENT_SECRET, // Your Auth0 Client Secret
   secret: process.env.SESSION_SECRET, // Secret used to encrypt session cookies
   authRequired: false,
   auth0Logout: true,
-  redirectUri: `${process.env.BASE_URL}/callback` // Full URL to handle the response from Auth0
+  // Ensure the callback URL is correctly set in the Auth0 dashboard
 }));
-
 
 const db = process.env.DB_CONNECTION;
 const options = { serverSelectionTimeoutMS: 5000 };
@@ -70,8 +70,12 @@ app.get('/', (req, res) => res.render('index.ejs'));
 app.get('/about', (req, res) => res.render('about.ejs'));
 
 app.get('/callback', (req, res) => {
-  // Once Auth0 has authenticated the user, redirect to /games
-  res.redirect('/games');
+  // Manually redirect to /games after successful authentication
+  if (req.oidc.isAuthenticated()) {
+    res.redirect('/games');
+  } else {
+    res.redirect('/login');
+  }
 });
 
 app.get('/games/indecision', requiresAuth(), (req, res) => {
