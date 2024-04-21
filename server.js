@@ -50,7 +50,7 @@ app.use(session({
 
 app.use(auth({
   issuerBaseURL: process.env.AUTH0_DOMAIN,
-  baseURL: 'https://gleaming-sarong-crab.cyclic.app',
+  baseURL: 'http://localhost:3000',
   clientID: process.env.AUTH0_CLIENT_ID,
   secret: process.env.SESSION_SECRET,
   authRequired: false,
