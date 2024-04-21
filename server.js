@@ -38,7 +38,10 @@ app.use(cookieParser());
 // DB Config
 const db = process.env.DB_CONNECTION;
 const options = {
-  serverSelectionTimeoutMS: 5000 // Shorten the timeout to fail faster if not connected
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 10000, // Extend the timeout to 10 seconds
+  socketTimeoutMS: 45000, // Increase the socket timeout to give more flexibility
 };
 // Connect to MongoDB
 mongoose
