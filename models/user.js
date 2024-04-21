@@ -8,24 +8,24 @@ const userSchema = new mongoose.Schema({
     // username: { type: String, required: true, unique: true},
     // email: { type: String, required: true, unique: true },
     // experiments: [{logJson: String}],
-    // indecision: {
-    //     0: {type: Number},
-    //     1: { type: Number},
-    //     2: { type: Number},
-    //     3: { type: Number},
-    //     4: { type: Number},
-    //     5: { type: Number},
-    //     6: { type: Number},
-    //     7: { type: Number},
-    //     8: { type: Number},
-    //     9: { type: Number},
-    //     10: { type: Number},
-    //     11: { type: Number},
-    //     12: { type: Number},
-    //     13: { type: Number},
-    //     14: { type: Number},
-    //     15: { type: Number},
-    // }
+    indecision: {
+        0: {type: Number, default: 3},
+        1: { type: Number, default: 3},
+        2: { type: Number, default: 3},
+        3: { type: Number, default: 3},
+        4: { type: Number, default: 3},
+        5: { type: Number, default: 3},
+        6: { type: Number, default: 3},
+        7: { type: Number, default: 3},
+        8: { type: Number, default: 3},
+        9: { type: Number, default: 3},
+        10: { type: Number, default: 3},
+        11: { type: Number, default: 3},
+        12: { type: Number, default: 3},
+        13: { type: Number, default: 3},
+        14: { type: Number, default: 3},
+        15: { type: Number, default: 3},
+    }
 });
 
 module.exports = mongoose.model('User', userSchema);
