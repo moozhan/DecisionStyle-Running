@@ -57,24 +57,25 @@ app.use(auth({
   authRequired: false,
   auth0Logout: true,
   idTokenSigningAlg: 'RS256',
-  afterCallback: async (req, res, session, decodedState) => {
+  afterCallback: async (req, res, session) => {
     try {
-      const { user } = session;
-      if (!user) {
-        throw new Error("User data not available in session.");
-      }
-      const existingUser = await User.findOne({ auth0Id: user.sub });
+      const userSub = session.user.sub;  // Access the user's unique identifier
+      // Check if the user already exists in the database
+      const existingUser = await User.findOne({ auth0Id: userSub }).exec();
       if (!existingUser) {
+        // If the user does not exist, create a new user
         const newUser = new User({
-          auth0Id: user.sub
+          auth0Id: userSub  // Storing only the user's ID
         });
-        await newUser.save();
+        await newUser.save();  // Save the new user to the database
+        console.log('New user created with ID:', userSub);
+      } else {
+        console.log('User already exists. No new user created.');
       }
-      res.redirect('/games');
+      res.redirect('/games');  // Redirect to /games whether new user is created or not
     } catch (err) {
       console.error("Error in afterCallback:", err);
-      // Redirect to a generic error page or back to login
-      res.redirect('/error'); // Ensure you have an error route that handles errors
+      res.status(500).send("Failed to handle user data after login.");
     }
   }
 }));
