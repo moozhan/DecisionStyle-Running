@@ -59,20 +59,21 @@ app.use(auth({
   idTokenSigningAlg: 'RS256',
   afterCallback: async (req, res, session) => {
     try {
-      const userSub = session.user.sub;  // Access the user's unique identifier
-      // Check if the user already exists in the database
+      const userSub = session.user.sub;  // The user's unique identifier from Auth0.
+      // Check if the user already exists in your database
       const existingUser = await User.findOne({ auth0Id: userSub }).exec();
       if (!existingUser) {
-        // If the user does not exist, create a new user
+        // If the user does not exist, create a new user record
         const newUser = new User({
           auth0Id: userSub  // Storing only the user's ID
         });
-        await newUser.save();  // Save the new user to the database
+        await newUser.save();
         console.log('New user created with ID:', userSub);
       } else {
-        console.log('User already exists. No new user created.');
+        console.log('User already exists in the database.');
       }
-      res.redirect('/games');  // Redirect to /games whether new user is created or not
+      // Redirect to /games after handling the user data
+      res.redirect('/games');
     } catch (err) {
       console.error("Error in afterCallback:", err);
       res.status(500).send("Failed to handle user data after login.");
