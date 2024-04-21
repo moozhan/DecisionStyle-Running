@@ -12,7 +12,7 @@ const MongoStore = require('connect-mongo');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const { requiresAuth } = require('express-openid-connect');
+const { auth } = require('express-openid-connect');
 const User = require('./models/user');
 const bodyParser = require('body-parser');
 
@@ -48,7 +48,7 @@ app.use(session({
   }
 }));
 
-app.use(requiresAuth({
+app.use(auth({
   issuerBaseURL: process.env.AUTH0_DOMAIN,
   baseURL: 'https://gleaming-sarong-crab.cyclic.app',
   clientID: process.env.AUTH0_CLIENT_ID,
