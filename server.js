@@ -35,6 +35,17 @@ app.use(cors({
 }));
 app.use(cookieParser());
 
+// DB Config
+const db = process.env.DB_CONNECTION;
+const options = {
+  serverSelectionTimeoutMS: 5000 // Shorten the timeout to fail faster if not connected
+};
+// Connect to MongoDB
+mongoose
+  .connect(db, options)
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log(err));
+
 
 
 app.use(session({
@@ -52,17 +63,6 @@ app.use(session({
   }
 }));
 
-
-// DB Config
-const db = process.env.DB_CONNECTION;
-const options = {
-  serverSelectionTimeoutMS: 5000 // Shorten the timeout to fail faster if not connected
-};
-// Connect to MongoDB
-mongoose
-  .connect(db, options)
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
 
 
 passport.use(new Auth0Strategy({
