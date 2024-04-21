@@ -4,23 +4,24 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express');
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
+const session = require('express-session');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const path = require('path');
 const { auth, requiresAuth } = require('express-openid-connect');
 const User = require('./models/user');
-const bodyParser = require('body-parser');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
 
 const app = express();
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.set('trust proxy', 1); // Trust first proxy
+app.set('trust proxy', 1);
 app.use(cors({
   origin: [
     'https://lazy-puce-tortoise-yoke.cyclic.app',
@@ -48,39 +49,25 @@ app.use(session({
 }));
 
 app.use(auth({
-  issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`, // Your Auth0 domain
-  baseURL: process.env.BASE_URL, // The base URL of your app, make sure it's correctly set in your environment variables
-  clientID: process.env.AUTH0_CLIENT_ID, // Your Auth0 Client ID
-  clientSecret: process.env.AUTH0_CLIENT_SECRET, // Your Auth0 Client Secret
-  secret: process.env.SESSION_SECRET, // Secret used to encrypt session cookies
+  issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`,
+  baseURL: process.env.BASE_URL,
+  clientID: process.env.AUTH0_CLIENT_ID,
+  clientSecret: process.env.AUTH0_CLIENT_SECRET,
   authRequired: false,
   auth0Logout: true,
-  // Ensure the callback URL is correctly set in the Auth0 dashboard
+  idTokenSigningAlg: 'RS256',
+  secret: process.env.SESSION_SECRET
 }));
 
 const db = process.env.DB_CONNECTION;
-const options = { serverSelectionTimeoutMS: 5000 };
-mongoose.connect(db, options)
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
-//================================================== All pages
 app.get('/', (req, res) => res.render('index.ejs'));
-
 app.get('/about', (req, res) => res.render('about.ejs'));
 
-app.get('/callback', (req, res) => {
-  // Manually redirect to /games after successful authentication
-  if (req.oidc.isAuthenticated()) {
-    res.redirect('/games');
-  } else {
-    res.redirect('/login');
-  }
-});
-
-app.get('/games/indecision', requiresAuth(), (req, res) => {
-  res.render('indecision.ejs');
-});
+app.get('/games/indecision', requiresAuth(), (req, res) => res.render('indecision.ejs'));
 
 app.post('/games/indecision', requiresAuth(), async (req, res) => {
   try {
@@ -99,9 +86,7 @@ app.post('/games/indecision', requiresAuth(), async (req, res) => {
   }
 });
 
-app.get('/games', requiresAuth(), (req, res) => {
-  res.render('games.ejs');
-});
+app.get('/games', requiresAuth(), (req, res) => res.render('games.ejs'));
 
 app.get('/user', requiresAuth(), (req, res) => {
   res.json({
@@ -111,9 +96,10 @@ app.get('/user', requiresAuth(), (req, res) => {
   });
 });
 
+app.get('/login', (req, res) => req.oidc.login({ returnTo: '/games' }));
+
 app.get('/logout', (req, res) => {
-  req.oidc.logout();
-  res.redirect('/');
+  req.oidc.logout({ returnTo: req.protocol + '://' + req.get('host') });
 });
 
 const PORT = process.env.PORT || 3000;
