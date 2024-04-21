@@ -55,37 +55,42 @@ app.use(auth({
   clientSecret: process.env.AUTH0_CLIENT_SECRET,
   secret: process.env.SESSION_SECRET,
   authRequired: false,
-  auth0Logout: true,
-  idTokenSigningAlg: 'RS256',
-  afterCallback: async (req, res, session) => {
-    try {
-      // Check for user object existence
-      if (!session.user || !session.user.sub) {
-        console.error("User data is incomplete or missing in session.");
-        return res.status(400).send("Necessary user data not available in session.");
-      }
-      const userSub = session.user.sub;
-      const existingUser = await User.findOne({ auth0Id: userSub }).exec();
-      if (!existingUser) {
-        const newUser = new User({ auth0Id: userSub });
-        await newUser.save();
-        console.log('New user created with ID:', userSub);
-      }
-      // Redirect after handling user data
-      return res.redirect('/games');
-    } catch (err) {
-      console.error("Error in afterCallback:", err);
-      if (!res.headersSent) {
-        return res.status(500).send("Failed to handle user data after login.");
-      }
-    }
-  }
+  auth0Logout: true
 }));
 
 const db = process.env.DB_CONNECTION;
 mongoose.connect(db)
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
+
+  // Middleware to store user ID if not exists
+async function storeUserId(req, res, next) {
+  if (req.oidc && req.oidc.user) {
+    const userSub = req.oidc.user.sub;
+    try {
+      const existingUser = await User.findOne({ auth0Id: userSub });
+      if (!existingUser) {
+        const newUser = new User({ auth0Id: userSub });
+        await newUser.save();
+        console.log('New user created with ID:', userSub);
+      }
+      next();
+    } catch (err) {
+      console.error("Database operation failed:", err);
+      next(err);
+    }
+  } else {
+    next(new Error("User data not available"));
+  }
+}
+
+// Route to handle redirection after login and store user ID
+app.get('/post-login', requiresAuth(), storeUserId, (req, res) => {
+  res.redirect('/games');
+});
+app.get('/post-login', requiresAuth(), storeUserId, (req, res) => {
+  res.redirect('/games');
+});
 
 app.get('/', (req, res) => res.render('index.ejs'));
 app.get('/about', (req, res) => res.render('about.ejs'));
