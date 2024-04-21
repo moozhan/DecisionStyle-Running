@@ -169,15 +169,33 @@ app.get('/login', passport.authenticate('auth0', {
 
 // Auth0 callback route
 app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/login' }), (req, res) => {
-  const newUser = new User({
-    auth0Id: req.user.id,
-  });
+  // Search for an existing user with the given Auth0 ID
+  User.findOne({ auth0Id: req.user.id }, (err, existingUser) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send('An error occurred while checking user information');
+    }
 
-  newUser.save()
-    .then(user => res.json(user))
-    .catch(err => console.log(err));
-    
-  res.redirect('/games');
+    if (existingUser) {
+      // User already exists, so we can redirect to the games page directly
+      return res.redirect('/games');
+    } else {
+      // User does not exist, create a new user
+      const newUser = new User({
+        auth0Id: req.user.id,
+      });
+
+      newUser.save()
+        .then(user => {
+          console.log('New user added:', user);
+          res.redirect('/games');
+        })
+        .catch(err => {
+          console.log('Error saving new user:', err);
+          res.status(500).send('Error creating new user');
+        });
+    }
+  });
 });
 
 app.get('/logout', (req, res) => {
