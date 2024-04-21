@@ -98,13 +98,6 @@ app.get('/games/indecision', (req, res) => {
 
 app.get('/games', (req, res) => {
   if (req.isAuthenticated()) {
-    const newUser = new User({
-      auth0Id: req.user.id
-    });
-
-    newUser.save()
-      .then(user => res.json(user))
-      .catch(err => console.log(err));
     res.render('games.ejs');
   } else {
     res.status(401).json({ error: 'User is not authenticated' });
@@ -135,6 +128,14 @@ app.get('/user', (req, res) => {
 app.get('/login', passport.authenticate('auth0', {
   scope: 'openid email profile'
 }), (req, res) => {
+  const newUser = new User({
+    auth0Id: req.user.id,
+    indecision
+  });
+
+  newUser.save()
+    .then(user => res.json(user))
+    .catch(err => console.log(err));
   res.redirect('/callback');
 });
 
