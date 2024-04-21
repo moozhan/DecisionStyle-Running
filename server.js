@@ -98,16 +98,14 @@ app.get('/games/indecision', (req, res) => {
 
 app.get('/games', (req, res) => {
   if (req.isAuthenticated()) {
-    // const newUser = new User({
-    //   username,
-    //   email,
-    //   password
-    // });
+    const newUser = new User({
+      auth0Id: req.user.id
+    });
 
-    // newUser.save()
-    //   .then(user => res.json(user))
-    //   .catch(err => console.log(err));
-    res.render('games.ejs', { name: JSON.stringify(req.user) });
+    newUser.save()
+      .then(user => res.json(user))
+      .catch(err => console.log(err));
+    res.render('games.ejs');
   } else {
     res.status(401).json({ error: 'User is not authenticated' });
   }
