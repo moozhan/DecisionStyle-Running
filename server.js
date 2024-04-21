@@ -38,13 +38,12 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   store: MongoStore.create({
-    mongoUrl: process.env.DB_CONNECTION,
-    collectionName: 'sessions'
+    mongoUrl: process.env.DB_CONNECTION
   }),
   cookie: {
     httpOnly: true,
-    secure: true,
-    sameSite: 'None'
+    secure: process.env.NODE_ENV === 'production',  // Ensure use of HTTPS in production
+    sameSite: 'None'  // Adjust according to your cross-origin needs
   }
 }));
 
@@ -88,9 +87,6 @@ async function storeUserId(req, res, next) {
   }
 }
 
-app.get('/callback', requiresAuth(), (req, res) => {
-  res.redirect('/post-login');
-});
 // Route to handle redirection after login and store user ID
 app.get('/post-login', requiresAuth(), storeUserId, (req, res) => {
   res.redirect('/games');
