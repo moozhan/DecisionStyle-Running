@@ -100,26 +100,24 @@ app.get('/games/indecision', (req, res) => {
 app.post('/games/indecision', (req, res) => {
   if (req.isAuthenticated()) {
     const indecision = {
-      0: req.body.0,
-      1: req.body.1,
-      2: req.body.2,
-      3: req.body.3,
-      4: req.body.4,
-      5: req.body.5,
-      6: req.body.6,
-      7: req.body.7,
-      8: req.body.8,
-      9: req.body.9,
-      10: req.body.10,
-      11: req.body.11,
-      12: req.body.12,
-      13: req.body.13,
-      14: req.body.14,
-
+      0: req.body.zero,
+      1: req.body.one,
+      2: req.body.two,
+      3: req.body.three,
+      4: req.body.four,
+      5: req.body.five,
+      6: req.body.six,
+      7: req.body.seven,
+      8: req.body.eight,
+      9: req.body.nine,
+      10: req.body.ten,
+      11: req.body.eleven,
+      12: req.body.twelve,
+      13: req.body.thirteen,
+      14: req.body.fourteen
     }
-    res.body = {'data': req.body};
     const id = req.user.id;
-    User.updateOne({ auth0Id: id }, {$push: {"indecision": req.body}});
+    User.updateOne({ auth0Id: id }, {$push: {"indecision": indecision}});
     res.render('/games', {indecision: 'done'});
   } else {
     res.status(401).json({ error: 'User is not authenticated' });
