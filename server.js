@@ -67,31 +67,43 @@ mongoose.connect(db)
   .catch(err => console.log(err));
 
   // Middleware to store user ID if not exists
-async function storeUserId(req, res, next) {
-  if (req.oidc && req.oidc.user) {
-    const userSub = req.oidc.user.sub;
-    try {
-      const existingUser = await User.findOne({ auth0Id: userSub });
-      if (!existingUser) {
-        const newUser = new User({ auth0Id: userSub });
-        await newUser.save();
-        console.log('New user created with ID:', userSub);
+  async function storeUserId(req, res, next) {
+    if (req.oidc && req.oidc.user) {
+      const userSub = req.oidc.user.sub;
+      try {
+        const existingUser = await User.findOne({ auth0Id: userSub });
+        if (!existingUser) {
+          const newUser = new User({ auth0Id: userSub });
+          await newUser.save();
+          console.log('New user created with ID:', userSub);
+        }
+        // Only call next if no response has been sent
+        if (!res.headersSent) {
+          next();
+        }
+      } catch (err) {
+        console.error("Database operation failed:", err);
+        if (!res.headersSent) {
+          next(err); // Pass error to error handling middleware
+        }
       }
-      next();
-    } catch (err) {
-      console.error("Database operation failed:", err);
-      next(err);
+    } else {
+      if (!res.headersSent) {
+        next(new Error("User data not available"));
+      }
     }
-  } else {
-    next(new Error("User data not available"));
   }
-}
-app.get('/callback', requiresAuth(), (req, res) => {
-  console.log(req.originalUrl);
-  console.log(req.query);
-  // Additional logic to handle redirection or processing
-  res.redirect('/post-login');
-});
+
+
+  app.get('/callback', requiresAuth(), (req, res) => {
+    // Check for proper session handling, log session details
+    console.log("Session info:", req.oidc.user);
+  
+    // Ensure only one response is sent
+    if (!res.headersSent) {
+      res.redirect('/post-login');
+    }
+  });
 // Route to handle redirection after login and store user ID
 app.get('/post-login', requiresAuth(), storeUserId, (req, res) => {
   res.redirect('/games');
