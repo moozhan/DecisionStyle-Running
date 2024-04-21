@@ -49,13 +49,14 @@ app.use(session({
 
 app.use(auth({
   issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`,
-  baseURL: process.env.BASE_URL,
+  baseURL: process.env.BASE_URL, // Ensure this is the correct URL where your app is hosted
   clientID: process.env.AUTH0_CLIENT_ID,
-  secret: process.env.SESSION_SECRET,
+  clientSecret: process.env.AUTH0_CLIENT_SECRET, // 'secret' was a typo; it should be 'clientSecret'
   authRequired: false,
   auth0Logout: true,
-  redirectUriPath: '/callback'
+  redirectUriPath: '/callback', // This is where Auth0 will redirect users after login
 }));
+
 
 const db = process.env.DB_CONNECTION;
 const options = { serverSelectionTimeoutMS: 5000 };
