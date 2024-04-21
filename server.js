@@ -47,13 +47,14 @@ app.use(session({
 }));
 
 app.use(auth({
-  issuerBaseURL: process.env.AUTH0_DOMAIN,
-  baseURL: 'http://localhost:3000',
+  issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`,
+  baseURL: 'http://localhost:3000', // Make sure this is the actual URL from where your app is served in production
   clientID: process.env.AUTH0_CLIENT_ID,
   secret: process.env.SESSION_SECRET,
   authRequired: false,
   auth0Logout: true,
 }));
+
 
 // DB Config
 const db = process.env.DB_CONNECTION;
