@@ -32,13 +32,14 @@ app.use(cors({
   credentials: true
 }));
 app.use(cookieParser());
-
-
-
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
+  store: MongoStore.create({ 
+    mongoUrl: process.env.DB_CONNECTION, 
+    collectionName: 'sessions' 
+  }),
   cookie: {
     httpOnly: true,
     secure: true, // Should be true in production when using HTTPS
