@@ -7,12 +7,12 @@ const session = require('express-session');
 const passport = require('passport');
 const Auth0Strategy = require('passport-auth0');
 const mongoose = require('mongoose');
-const gameRoutes = require('./routes/gameRoutes');
-const bcrypt = require('bcrypt');
+// const gameRoutes = require('./routes/gameRoutes');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const { requiresAuth } = require('express-openid-connect');
+// const User = require('./models/user');
 
 
 const app = express();
@@ -88,9 +88,9 @@ app.get('/about', (req, res) => {
   res.render('about.ejs');
 });
 
-app.get('/games', (req, res) => {
-  res.render('games.ejs');
-});
+// app.get('/games', (req, res) => {
+//   res.render('games.ejs');
+// });
 
 app.get('/games/indecision', (req, res) => {
   res.render('indecision.ejs');
@@ -98,6 +98,15 @@ app.get('/games/indecision', (req, res) => {
 
 app.get('/games', (req, res) => {
   if (req.isAuthenticated()) {
+    // const newUser = new User({
+    //   username,
+    //   email,
+    //   password
+    // });
+
+    // newUser.save()
+    //   .then(user => res.json(user))
+    //   .catch(err => console.log(err));
     res.render('games.ejs', { name: JSON.stringify(req.user) });
   } else {
     res.status(401).json({ error: 'User is not authenticated' });
