@@ -110,26 +110,33 @@ app.get('/games/indecision', (req, res) => {
 
 app.post('/games/indecision',  (req, res) => {
   if (req.isAuthenticated()) {
-    const indecision = {
-      0: req.body.zero,
-      1: req.body.one,
-      2: req.body.two,
-      3: req.body.three,
-      4: req.body.four,
-      5: req.body.five,
-      6: req.body.six,
-      7: req.body.seven,
-      8: req.body.eight,
-      9: req.body.nine,
-      10: req.body.ten,
-      11: req.body.eleven,
-      12: req.body.twelve,
-      13: req.body.thirteen,
-      14: req.body.fourteen
-    }
+    const indecision = [
+      req.body.zero,
+      req.body.one,
+      req.body.two,
+      req.body.three,
+      req.body.four,
+      req.body.five,
+      req.body.six,
+      req.body.seven,
+      req.body.eight,
+      req.body.nine,
+      req.body.ten,
+      req.body.eleven,
+      req.body.twelve,
+      req.body.thirteen,
+      req.body.fourteen
+    ]
     const id = req.user.id;
-    User.updateOne({ auth0Id: id }, {$push: {"indecision": indecision}});
-    res.redirect('/games');
+    User.updateOne({ auth0Id: id }, { $push: { "indecision": indecision } })
+    .then(result => {
+      console.log('Update successful', result);
+      res.redirect('/games');
+    })
+    .catch(error => {
+      console.error('Error updating user', error);
+      res.redirect('/games/indecision');
+    });    
   } else {
     res.status(401).json({ error: 'User is not authenticated' });
   }
