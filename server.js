@@ -86,7 +86,12 @@ async function storeUserId(req, res, next) {
     next(new Error("User data not available"));
   }
 }
-
+app.get('/callback', requiresAuth(), (req, res) => {
+  console.log(req.originalUrl);
+  console.log(req.query);
+  // Additional logic to handle redirection or processing
+  res.redirect('/post-login');
+});
 // Route to handle redirection after login and store user ID
 app.get('/post-login', requiresAuth(), storeUserId, (req, res) => {
   res.redirect('/games');
