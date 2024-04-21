@@ -13,7 +13,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const { requiresAuth } = require('express-openid-connect');
 const User = require('./models/user');
-
+const bodyParser = require('body-parser');
 
 const app = express();
 // Set EJS as the view engine
