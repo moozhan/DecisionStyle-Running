@@ -140,13 +140,14 @@ app.post('/games/indecision',  (req, res) => {
   }
 });
 
-app.post('/updateData', (req, res) => {
+app.post('/updateData', express.json(),(req, res) => {
   if (req.isAuthenticated()) {
       if (typeof req.body === 'string' || req.body instanceof String) {
         console.log('body is Json');
       } else {
         console.log(typeof req.body);
       }
+      console.log(req.body);
       const id = req.user.id;
       // User.updateOne({ auth0Id: id }, {$push: {"experiments": JSON.parse(req.body)}})
       // .then(result => {
