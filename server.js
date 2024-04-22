@@ -142,8 +142,8 @@ app.post('/games/indecision',  (req, res) => {
 
 app.post('/updateData', (req, res) => {
   if (req.isAuthenticated()) {
-
-      res.body = {'user': req.user, 'data': req.body}
+      console.log(req.body);
+      console.log(JSON.stringify(req.body));
       const id = req.user.id;
       User.updateOne({ auth0Id: id }, {$push: {"experiments": JSON.parse(req.body)}})
       .then(result => {
