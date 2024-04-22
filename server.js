@@ -145,7 +145,7 @@ app.post('/updateData', (req, res) => {
 
       res.body = {'user': req.user, 'data': req.body}
       const id = req.user.id;
-      User.updateOne({ auth0Id: id }, {$push: {"experiments": JSON.stringify(req.body)}})
+      User.updateOne({ auth0Id: id }, {$push: {"experiments": JSON.parse(req.body)}})
       .then(result => {
         console.log('Update successful', result);
         res.redirect('/games');
