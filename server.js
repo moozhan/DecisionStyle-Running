@@ -142,13 +142,9 @@ app.post('/games/indecision',  (req, res) => {
 
 app.post('/updateData', express.json(),(req, res) => {
   if (req.isAuthenticated()) {
-      if (typeof req.body === 'string' || req.body instanceof String) {
-        console.log('body is Json');
-      } else {
-        console.log(typeof req.body);
-      }
-      console.log(req.body.toString());
-      console.log(JSON.parse(req.body.toString()));
+      console.log(req.body.data);
+      console.log(typeof req.body.data);
+      console.log(req.body.data);
       const id = req.user.id;
       User.updateOne({ auth0Id: id }, {$push: {"experiments": JSON.parse(req.body.toString())}})
       // .then(result => {
@@ -163,6 +159,11 @@ app.post('/updateData', express.json(),(req, res) => {
       res.status(401).json({ error: 'User is not authenticated' });
   }
 });
+
+app.post('/test', (req, res) => {
+  console.log(req.body);
+  console.log(req.body.toString());
+})
 
 
 app.get('/games', (req, res) => {
