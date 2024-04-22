@@ -144,9 +144,8 @@ app.post('/updateData', express.json(),(req, res) => {
   if (req.isAuthenticated()) {
       console.log(req.body.data);
       console.log(typeof req.body.data);
-      console.log(req.body.data);
       const id = req.user.id;
-      User.updateOne({ auth0Id: id }, {$push: {"experiments": JSON.parse(req.body.toString())}})
+      User.updateOne({ auth0Id: id }, {$push: {"experiments": JSON.parse(req.body.data)}})
       // .then(result => {
       //   console.log('Update successful', result);
       //   res.redirect('/games');
