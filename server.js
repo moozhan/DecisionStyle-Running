@@ -140,7 +140,7 @@ app.post('/games/indecision',  (req, res) => {
   }
 });
 
-app.post('/updateData', express.json(),(req, res) => {
+app.post('/updateData',(req, res) => {
   if (req.isAuthenticated()) {
       console.log(req.body.data);
       console.log(typeof req.body.data);
