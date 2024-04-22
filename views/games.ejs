@@ -1,12 +1,41 @@
 <html>
 <head>
         <title>Decision App</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
+    <%- include('partials/navbar'); %>
     <!--Using Variable-->
-    <h1>Let's Create Your Decision Profile </h1>
-    <p>Here are the games available to you <%= name %></p>
-    <a href="/logout">Logout</a>
-
+    <div class="container-fluid" style="width: 80%; margin-top:5em;">
+        <h1>Get to Know Your Decision-Making Style</h1>
+        <p>Below are series of test for finding out about your decision-making style. Each game or test target specific aspect of decision-making; one about how far ahead you plan, another about whether you are emotional decision-maker and the other about indecision.</p>
+        <div class="row mx-auto" style="width: 100%;">
+            <div class="col" style="padding: 2em;">
+                <div class="row border-dot" style="padding: 1em;">
+                    <div class="col-sm-4">
+                        <a href="https://dev-backend.d4id81j7108zr.amplifyapp.com/AWS%20Experiment/dist/index.html"><img src="/images/four.jpg" style="width:100%;"/></a>
+                    </div>
+                    <div class="col-sm-8" >
+                        <h3>Four in a Row Game</h3>
+                        <p>This is to test how good you are in planning your next steps. How many steps ahead you plan for? </p>
+                        <p>You play a 4 in a row (a.k.a connect four) against a robot. </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col" style="padding: 2em;">
+                <div class="row border-dot" style="padding: 1em;">
+                    <div class="col-sm-4">
+                        <a href="games/indecision"><img src="/images/indecision.jpg" style="width:100%;"/></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <h3>Indecision Test</h3>
+                        <p>This is to test how good you are in planning your next steps. How many steps ahead you plan for? </p>
+                        <p>You play a 4 in a row (a.k.a connect four) against a robot. </p>
+                    </div>
+                </div>            
+            </div>
+        </div>
+    </div>
 </body>
 </html>

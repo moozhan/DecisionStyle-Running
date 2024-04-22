@@ -4,4 +4,4 @@ const mongoose = require("mongoose");
 const experimentSchema =
     new Schema({logJson: String});
 
-module.exports = mongoose.model('User', experimentSchema);
+module.exports = mongoose.model('Experiment', experimentSchema);
