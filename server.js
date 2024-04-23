@@ -37,8 +37,8 @@ app.use(cookieParser());
 // DB Config
 const db = process.env.DB_CONNECTION;
 const options = {
-  serverSelectionTimeoutMS: 10000, // Extend the timeout to 10 seconds
-  socketTimeoutMS: 45000, // Increase the socket timeout to give more flexibility
+  serverSelectionTimeoutMS: 10000, 
+  socketTimeoutMS: 45000, 
 };
 // Connect to MongoDB
 mongoose
@@ -96,7 +96,6 @@ app.get('/about', (req, res) => {
   res.render('about.ejs');
 });
 
-
 app.get('/games/indecision', (req, res) => {
   if (req.isAuthenticated()) {
     res.render('indecision.ejs');
@@ -140,6 +139,31 @@ app.post('/games/indecision',  (req, res) => {
   }
 });
 
+app.post('/userprofile',  (req, res) => {
+  if (req.isAuthenticated()) {
+    const userDetails = {
+      "strategic": req.body.strategic,
+      "yearsofexperience": req.body.yearsofexperience,
+      "training": req.body.training,
+      "yearsoftraining": req.body.yearsoftraining,
+      "location": req.body.location,
+      "age": req.body.age,
+      "gender": req.body.gender
+    }
+    console.log(userDetails);
+    const id = req.user.id;
+    User.updateOne({ auth0Id: id }, { $push: { "userdetails": userDetails } })
+    .then(result => {
+      console.log('Update successful', result);
+    })
+    .catch(error => {
+      console.error('Error updating user', error);
+    });    
+  } else {
+    res.status(401).json({ error: 'User is not authenticated' });
+  }
+});
+
 app.post('/updateData', express.json(),(req, res) => {
   if (req.isAuthenticated()) {
       if (typeof req.body === 'string' || req.body instanceof String) {
@@ -162,6 +186,14 @@ app.post('/updateData', express.json(),(req, res) => {
       res.status(401).json({ error: 'User is not authenticated' });
   }
 });
+
+
+app.get('/indecision', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render('indecision.ejs');
+  } else {
+    res.status(401).json({ error: 'User is not authenticated' });
+  }})
 
 
 app.get('/games', (req, res) => {
