@@ -29,7 +29,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('trust proxy', 1); // Trust first proxy
 app.use(cors({
-  origin: ['https://lazy-puce-tortoise-yoke.cyclic.app', 'https://moozhan.github.io', 'https://dev-backend.d4id81j7108zr.amplifyapp.com', 'https://7rh93fhc7e.execute-api.eu-central-1.amazonaws.com'], // Update with the location of your HTML file
+  origin: ['https://lazy-puce-tortoise-yoke.cyclic.app', 'https://moozhan.github.io', 'https://dev-backend.d4id81j7108zr.amplifyapp.com', 'https://7rh93fhc7e.execute-api.eu-central-1.amazonaws.com',
+  'https://fourinarow.decisionmakingstyle.com'], // Update with the location of your HTML file
   credentials: true
 }));
 app.use(cookieParser());
@@ -37,8 +38,8 @@ app.use(cookieParser());
 // DB Config
 const db = process.env.DB_CONNECTION;
 const options = {
-  serverSelectionTimeoutMS: 10000, 
-  socketTimeoutMS: 45000, 
+  serverSelectionTimeoutMS: 10000,
+  socketTimeoutMS: 45000,
 };
 // Connect to MongoDB
 mongoose
@@ -140,57 +141,57 @@ app.post('/games/indecision',  (req, res) => {
 });
 
 app.post('/userprofile', async (req, res) => {
-  if (req.isAuthenticated()) {
-    try {
-      const userDetails = {
-        "strategic": req.body.strategic,
-        "yearsofexperience": req.body.yearsofexperience,
-        "training": req.body.training,
-        "yearsoftraining": req.body.yearsoftraining,
-        "location": req.body.location,
-        "age": req.body.age,
-        "gender": req.body.gender
-      }
-      const id = req.user.id;
-      await User.updateOne({ auth0Id: id }, { $push: { "userdetails": userDetails } });
-      console.log('Update successful');
-      
-      res.send('Profile updated successfully!'); // Respond to client on success
-    } catch (error) {
-      console.error('Error updating user', error);
-      res.status(500).send('Error updating user details'); // Send error response
+    if (req.isAuthenticated()) {
+        try {
+            const userDetails = {
+                "strategic": req.body.strategic,
+                "yearsofexperience": req.body.yearsofexperience,
+                "training": req.body.training,
+                "yearsoftraining": req.body.yearsoftraining,
+                "location": req.body.location,
+                "age": req.body.age,
+                "gender": req.body.gender
+            }
+            const id = req.user.id;
+            await User.updateOne({ auth0Id: id }, { $push: { "userdetails": userDetails } });
+            console.log('Update successful');
+
+            res.send('Profile updated successfully!'); // Respond to client on success
+        } catch (error) {
+            console.error('Error updating user', error);
+            res.status(500).send('Error updating user details'); // Send error response
+        }
+    } else {
+        res.status(401).send('User is not authenticated');
     }
-  } else {
-    res.status(401).send('User is not authenticated');
-  }
 });
 
 app.post('/updateData',(req, res) => {
-  if (req.isAuthenticated()) {
-      console.log(JSON.parse(req.body.data));
-      const id = req.user.id;
-      User.updateOne({ auth0Id: id }, {$push: {"experiments": JSON.parse(req.body.data)}})
-      .then(result => {
-        console.log('Update successful', result);
-        res.redirect('/games');
-      })
-      .catch(error => {
-        console.error('Error updating user', error);
-        res.redirect('/games');
-      });
-  } else {
-      res.status(401).json({ error: 'User is not authenticated' });
-  }
+    if (req.isAuthenticated()) {
+        console.log(JSON.parse(req.body.data));
+        const id = req.user.id;
+        User.updateOne({ auth0Id: id }, {$push: {"experiments": JSON.parse(req.body.data)}})
+            .then(result => {
+                console.log('Update successful', result);
+                res.redirect('/games');
+            })
+            .catch(error => {
+                console.error('Error updating user', error);
+                res.redirect('/games');
+            });
+    } else {
+        res.status(401).json({ error: 'User is not authenticated' });
+    }
 });
 
 
 app.get('/indecision', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render('indecision.ejs');
-  } else {
-    res.status(401).json({ error: 'User is not authenticated' });
-  }})
-
+    if (req.isAuthenticated()) {
+        res.render('indecision.ejs');
+    } else {
+        res.status(401).json({ error: 'User is not authenticated' });
+    }
+});
 
 app.get('/games', (req, res) => {
   if (req.isAuthenticated()) {
