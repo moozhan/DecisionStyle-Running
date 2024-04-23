@@ -8,8 +8,8 @@ const userSchema = new mongoose.Schema({
     // username: { type: String, required: true, unique: true},
     // email: { type: String, required: true, unique: true },
     indecision: {type: Array, default: []},
-    experiments: [{logJson: String}],
     userdetails: {type: Array, default: []}
+    experiments: {type: Array, default: []},
 });
 
 module.exports = mongoose.model('User', userSchema);

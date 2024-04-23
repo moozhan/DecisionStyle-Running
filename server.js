@@ -164,20 +164,24 @@ app.post('/userprofile',  (req, res) => {
   }
 });
 
-app.post('/updateData', (req, res) => {
+app.post('/updateData', express.json(),(req, res) => {
   if (req.isAuthenticated()) {
-
-      res.body = {'user': req.user, 'data': req.body}
+      if (typeof req.body === 'string' || req.body instanceof String) {
+        console.log('body is Json');
+      } else {
+        console.log(typeof req.body);
+      }
+      console.log(req.body);
       const id = req.user.id;
-      User.updateOne({ auth0Id: id }, {$push: {"experiments.$.logJson": req.body}})
-      .then(result => {
-        console.log('Update successful', result);
-        res.redirect('/games');
-      })
-      .catch(error => {
-        console.error('Error updating user', error);
-        res.redirect('/games');
-      }); 
+      // User.updateOne({ auth0Id: id }, {$push: {"experiments": JSON.parse(req.body)}})
+      // .then(result => {
+      //   console.log('Update successful', result);
+      //   res.redirect('/games');
+      // })
+      // .catch(error => {
+      //   console.error('Error updating user', error);
+      //   res.redirect('/games');
+      // });
   } else {
       res.status(401).json({ error: 'User is not authenticated' });
   }
