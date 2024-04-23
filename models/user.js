@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     // email: { type: String, required: true, unique: true },
     indecision: {type: Array, default: []},
     userdetails: {type: Array, default: []},
-    experiments: {type: Array, default: []},
+    experiments: {type: Array, default: []}
 });
 
 module.exports = mongoose.model('User', userSchema);
