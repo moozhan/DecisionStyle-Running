@@ -161,7 +161,8 @@
           }
         });
       </script>
-      <script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('userdetailsform').addEventListener('submit', async function(e) {
             e.preventDefault(); // Prevent the default form submission behavior
             try {
@@ -170,17 +171,21 @@
                     method: 'POST',
                     body: formData
                 });
+                console.log(response)
                 if (response.ok) {
-                    // Handle success (e.g., show a success message)
-                    hasClosedPopup = true;                    
+                    alert('Profile updated successfully!');
+                    // You can also close the modal here if needed
+                    $('#myModal').modal('hide');
                 } else {
-                    // Handle error (e.g., show an error message)
-                    alert('Error submitting data.');
+                    const errorMsg = await response.text(); // Assuming the server sends a plain text error message
+                    alert('Error submitting data: ' + errorMsg);
                 }
             } catch (error) {
                 console.error('An error occurred:', error);
+                alert('An error occurred, check the console for details.');
             }
         });
-      </script>
+        });
+        </script>
 </body>
 </html>
