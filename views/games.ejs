@@ -167,9 +167,16 @@
             e.preventDefault(); // Prevent the default form submission behavior
             try {
                 const formData = new FormData(this);
+                formData.append('strategic', strategicCheckbox.checked ? '1' : '0');
+                formData.append('training', training.checked ? '1' : '0');
+                const plainFormData = Object.fromEntries(formData.entries());
+                const formDataJsonString = JSON.stringify(plainFormData);
                 const response = await fetch('/userprofile', {
-                    method: 'POST',
-                    body: formData
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: formDataJsonString
                 });
                 console.log(response)
                 if (response.ok) {
