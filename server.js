@@ -139,28 +139,29 @@ app.post('/games/indecision',  (req, res) => {
   }
 });
 
-app.post('/userprofile',  (req, res) => {
+app.post('/userprofile', async (req, res) => {
   if (req.isAuthenticated()) {
-    const userDetails = {
-      "strategic": req.body.strategic,
-      "yearsofexperience": req.body.yearsofexperience,
-      "training": req.body.training,
-      "yearsoftraining": req.body.yearsoftraining,
-      "location": req.body.location,
-      "age": req.body.age,
-      "gender": req.body.gender
-    }
-    console.log(userDetails);
-    const id = req.user.id;
-    User.updateOne({ auth0Id: id }, { $push: { "userdetails": userDetails } })
-    .then(result => {
-      console.log('Update successful', result);
-    })
-    .catch(error => {
+    try {
+      const userDetails = {
+        "strategic": req.body.strategic,
+        "yearsofexperience": req.body.yearsofexperience,
+        "training": req.body.training,
+        "yearsoftraining": req.body.yearsoftraining,
+        "location": req.body.location,
+        "age": req.body.age,
+        "gender": req.body.gender
+      }
+      const id = req.user.id;
+      await User.updateOne({ auth0Id: id }, { $push: { "userdetails": userDetails } });
+      console.log('Update successful');
+      
+      res.send('Profile updated successfully!'); // Respond to client on success
+    } catch (error) {
       console.error('Error updating user', error);
-    });    
+      res.status(500).send('Error updating user details'); // Send error response
+    }
   } else {
-    res.status(401).json({ error: 'User is not authenticated' });
+    res.status(401).send('User is not authenticated');
   }
 });
 

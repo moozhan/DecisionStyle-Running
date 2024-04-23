@@ -181,7 +181,6 @@
                 console.log(response)
                 if (response.ok) {
                     alert('Profile updated successfully!');
-                    // You can also close the modal here if needed
                     $('#myModal').modal('hide');
                 } else {
                     const errorMsg = await response.text(); // Assuming the server sends a plain text error message
