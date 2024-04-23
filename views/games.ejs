@@ -51,7 +51,7 @@
                         </div>
                         <div class="modal-body">
                             <p>Following information would help us better interpret your test results. For some tests, like planning depth, we use this information to rank you among other humans or robots.</p>
-                            <form style="margin-top: 2em;" action="/userprofile" method="POST">
+                            <form style="margin-top: 2em;" id="userdetailsform">
                                 <div class="form-group">
                                   <p>Does your job involve or is about strategic decision making?</p>
                                   <div class="form-check form-check-inline">
@@ -159,6 +159,27 @@
           } else {
             additionalQuestiontraining.style.display = 'none';
           }
+        });
+      </script>
+      <script>
+        document.getElementById('userdetailsform').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Prevent the default form submission behavior
+            try {
+                const formData = new FormData(this);
+                const response = await fetch('/userprofile', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    // Handle success (e.g., show a success message)
+                    hasClosedPopup = true;                    
+                } else {
+                    // Handle error (e.g., show an error message)
+                    alert('Error submitting data.');
+                }
+            } catch (error) {
+                console.error('An error occurred:', error);
+            }
         });
       </script>
 </body>
