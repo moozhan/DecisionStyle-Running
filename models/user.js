@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     // email: { type: String, required: true, unique: true },
     indecision: {type: Array, default: []},
     experiments: [{logJson: String}],
+    userdetails: {type: Array, default: []}
 });
 
 module.exports = mongoose.model('User', userSchema);
