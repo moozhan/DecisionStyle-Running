@@ -12,7 +12,7 @@ const router = express.Router();
 
 
 router.use(cors({
-    origin: ['https://lazy-puce-tortoise-yoke.cyclic.app', 'https://moozhan.github.io', 'https://dev-backend.d4id81j7108zr.amplifyapp.com', 'https://7rh93fhc7e.execute-api.eu-central-1.amazonaws.com', 'turk-dev.d4id81j7108zr.amplifyapp.com'], // Update with the location of your HTML file
+    origin: ['https://lazy-puce-tortoise-yoke.cyclic.app', 'https://moozhan.github.io', 'https://dev-backend.d4id81j7108zr.amplifyapp.com', 'https://7rh93fhc7e.execute-api.eu-central-1.amazonaws.com', 'https://turk-dev.d4id81j7108zr.amplifyapp.com'], // Update with the location of your HTML file
     credentials: true
 }));
 router.use(cookieParser());

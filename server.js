@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('trust proxy', 1); // Trust first proxy
 app.use(cors({
   origin: ['https://lazy-puce-tortoise-yoke.cyclic.app', 'https://moozhan.github.io', 'https://dev-backend.d4id81j7108zr.amplifyapp.com', 'https://7rh93fhc7e.execute-api.eu-central-1.amazonaws.com',
-  'https://fourinarow.decisionmakingstyle.com', 'turk-dev.d4id81j7108zr.amplifyapp.com'], // Update with the location of your HTML file
+  'https://fourinarow.decisionmakingstyle.com', 'https://turk-dev.d4id81j7108zr.amplifyapp.com'], // Update with the location of your HTML file
   credentials: true
 }));
 app.use(cookieParser());
