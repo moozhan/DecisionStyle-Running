@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('trust proxy', 1); // Trust first proxy
 app.use(cors({
-  origin: ['https://lazy-puce-tortoise-yoke.cyclic.app', 'https://moozhan.github.io', 'https://dev-backend.d4id81j7108zr.amplifyapp.com', 'https://7rh93fhc7e.execute-api.eu-central-1.amazonaws.com',
+  origin: ['https://lazy-puce-tortoise-yoke.cyclic.app', 'https://moozhan.github.io', 'https://dev-backend.d4id81j7108zr.amplifyapp.com',
   'https://fourinarow.decisionmakingstyle.com', 'https://turk-dev.d4id81j7108zr.amplifyapp.com'], // Update with the location of your HTML file
   credentials: true
 }));
@@ -199,11 +199,11 @@ function makeid(length) {
 app.post('/updateDataAnonymous', async (req, res) => {
     var id = makeid(20)
     res.body = {'user': id, 'data': req.body}
-    const existingUser = await User.updateOne({ auth0Id: req.user.id }).exec();
-    if (existingUser) {
-        id = makeid(20)
-        res.body = {'user': id, 'data': req.body}
-    }
+    // const existingUser = await User.updateOne({ auth0Id: req.user.id }).exec();
+    // if (existingUser) {
+    //     id = makeid(20)
+    //     res.body = {'user': id, 'data': req.body}
+    // }
     const newUser = new User({auth0Id: id});
     await newUser.save();
     User.updateOne({auth0Id: id}, {$push: {"experiments": JSON.parse(req.body.data)}})
