@@ -1,126 +1,128 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-        <title>Decision App</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decision App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
     <%- include('partials/navbar'); %>
-    <!--Using Variable-->
     <div class="container-fluid" style="width: 80%; margin-top:5em;">
         <h1>Get to Know Your Decision-Making Style</h1>
-        <p>Below are series of test we have collated to help you better understand your decision-making style. Each test examins a specific aspect of your decision-making. You can redo the tests as many times as you like.</p>
-        <div class="row mx-auto" style="width: 100%; height: 290px; margin-top: 4em;">
-            <a href="https://dev-backend.d4id81j7108zr.amplifyapp.com/AWS%20Experiment/dist/index.html" class="col">
-                <div class="hovernow border-dot"  style="padding: 1em; height: 100%">
-                <div class="row" style="padding: 1em;">
-                    <div class="col-sm-4">
-                        <img src="/images/four.jpg" style="width:100%;"/>
-                    </div>
-                    <div class="col-sm-8" >
-                        <h3>Planning Depth</h3>
-                        <p>This is to test how good you are in planning your next steps. How many steps ahead you plan for? </p>
-                        <p>You play a 4 in a row (a.k.a connect four) against a robot. You are scored against robots and other humans </p>
-                    </div>
-                </div>
-                </div>
-            </a>
-            <a href="games/indecision" class="col">
-                <div class="hovernow border-dot"  style="padding: 1em; height: 100% ">
-                <div class="row" style="padding: 1em;">
-                    <div class="col-sm-4">
-                        <img src="/images/four.jpg" style="width:100%;"/>
-                    </div>
-                    <div class="col-sm-8" >
-                        <h3>Indecision Test</h3>
-                        <p>This test examines the nature of compulsive indecisiveness and co-relates it to performance in experimental decision-making tasks </p>
-                        <p>You react to 15 statements by saying how often it they occure to you. </p>
-                    </div>
-                </div>
-                </div>
-            </a>
-            <button id="myBtn" class="btn btn-primary" style="width: 100px;">Complete Your Profile</button>
-            <div id="myModal" class="modal fade">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Complete Your Profile</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+        <p>Below are a series of tests we have collated to help you better understand your decision-making style. Each test examines a specific aspect of your decision-making. You can redo the tests as many times as you like.</p>
+        <div class="col-12">
+            <button id="myBtn" class="btn btn-primary" style="width: 200px;">Complete Your Profile</button>
+        </div>
+        <div class="row mx-auto" style="margin-top: 4em;">
+            <div class="col-12 col-md-6 mb-4">
+                <a href="https://dev-backend.d4id81j7108zr.amplifyapp.com/AWS%20Experiment/dist/index.html" class="d-block hovernow border-dot" style="height: 100%; padding: 1em;">
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <img src="/images/four.jpg" alt="Planning Depth" style="width:100%;">
                         </div>
-                        <div class="modal-body">
-                            <p>Following information would help us better interpret your test results. For some tests, like planning depth, we use this information to rank you among other humans or robots.</p>
-                            <form style="margin-top: 2em;" id="userdetailsform">
-                                <div class="form-group">
-                                  <p>Does your job involve or is about strategic decision making?</p>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="strategic" name="strategic" value="1">
-                                    <label class="form-check-label" for="strategic">Yes</label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="strategicno" name="strategic" value="0">
-                                    <label class="form-check-label" for="strategicno">No</label>
-                                  </div>
-                                </div>
-                                <div class="form-group" style="display: none;" id="additionalQuestion">
-                                        <label for="yearsofexperience">How many years of experience do you have?</label>
-                                        <input type="number" class="form-control" id="yearsofexperience" name="yearsofexperience">
-                                </div>
-                                <p>Are you trained in strategic decision making as part of your education or your job?</p>
-                                <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="checkbox" id="training" name="training" value="1">
-                                  <label class="form-check-label" for="strategic">Yes</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="checkbox" id="trainingno" name="training" value="0">
-                                  <label class="form-check-label" for="strategicno">No</label>
-                                </div>
-                                <div class="form-group" style="display: none;" id="additionalQuestiontraining">
-                                      <label for="yearsofexperience">How many years of training have you had?</label>
-                                      <input type="number" class="form-control" id="yearsoftraining" name="yearsoftraining">
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label for="location">Where do you live?</label>
-                                    <input type="text" id="location" name="location" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="age">Your age</label>
-                                    <select class="form-control form-control-sm" id="age" name="age"> 
-                                        <option>below 20</option>
-                                        <option>20-30</option>
-                                        <option>30-40</option>
-                                        <option>40-50</option>
-                                        <option>50-60</option>
-                                        <option>60-70</option>
-                                        <option>Above 70</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="gender">Your gender</label>
-                                    <select class="form-control form-control-sm" id="gender" name="gender"> 
-                                        <option>Prefer Not to Say</option>
-                                        <option>Female</option>
-                                        <option>Male</option>
-                                        <option>Other</option>
-                                    </select>
-                                </div>
+                        <div class="col-12 col-md-8">
+                            <h3>Planning Depth</h3>
+                            <p>This is to test how good you are at planning your next steps. How many steps ahead do you plan for?</p>
+                            <p>You play a 4 in a row (a.k.a connect four) against a robot. You are scored against robots and other humans.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-12 col-md-6 mb-4">
+                <a href="games/indecision" class="d-block hovernow border-dot" style="height: 100%; padding: 1em;">
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <img src="/images/indecision.jpg" alt="Indecision Test" style="width:100%;">
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <h3>Indecision Test</h3>
+                            <p>This test examines the nature of compulsive indecisiveness and correlates it to performance in experimental decision-making tasks.</p>
+                            <p>You react to 15 statements by saying how often they occur to you.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Complete Your Profile</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Following information would help us better interpret your test results. For some tests, like planning depth, we use this information to rank you among other humans or robots.</p>
+                    <form style="margin-top: 2em;" id="userdetailsform">
+                        <div class="form-group">
+                            <p>Does your job involve or is about strategic decision making?</p>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="strategic" name="strategic" value="1">
+                                <label class="form-check-label" for="strategic">Yes</label>
                             </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                              </form>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="strategicno" name="strategic" value="0">
+                                <label class="form-check-label" for="strategicno">No</label>
+                            </div>
                         </div>
-                    </div>
+                        <div class="form-group" style="display: none;" id="additionalQuestion">
+                            <label for="yearsofexperience">How many years of experience do you have?</label>
+                            <input type="number" class="form-control" id="yearsofexperience" name="yearsofexperience">
+                        </div>
+                        <p>Are you trained in strategic decision making as part of your education or your job?</p>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="training" name="training" value="1">
+                            <label class="form-check-label" for="strategic">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="trainingno" name="training" value="0">
+                            <label class="form-check-label" for="strategicno">No</label>
+                        </div>
+                        <div class="form-group" style="display: none;" id="additionalQuestiontraining">
+                            <label for="yearsofexperience">How many years of training have you had?</label>
+                            <input type="number" class="form-control" id="yearsoftraining" name="yearsoftraining">
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="location">Where do you live?</label>
+                            <input type="text" id="location" name="location" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Your age</label>
+                            <select class="form-control form-control-sm" id="age" name="age"> 
+                                <option>below 20</option>
+                                <option>20-30</option>
+                                <option>30-40</option>
+                                <option>40-50</option>
+                                <option>50-60</option>
+                                <option>60-70</option>
+                                <option>Above 70</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Your gender</label>
+                            <select class="form-control form-control-sm" id="gender" name="gender"> 
+                                <option>Prefer Not to Say</option>
+                                <option>Female</option>
+                                <option>Male</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+        // Include the JavaScript here that manages modal behaviors
         var hasClosedPopup = false;
 
         setTimeout(function() {
@@ -138,8 +140,7 @@
         document.getElementById("myBtn").addEventListener("click", function() {
             $('#myModal').modal('show');
         });
-    </script>
-    <script>
+
         const strategicCheckbox = document.getElementById('strategic');
         const additionalQuestion = document.getElementById('additionalQuestion');
         const training = document.getElementById('training');
@@ -160,38 +161,37 @@
             additionalQuestiontraining.style.display = 'none';
           }
         });
-      </script>
-    <script>
+
         document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('userdetailsform').addEventListener('submit', async function(e) {
-            e.preventDefault(); // Prevent the default form submission behavior
-            try {
-                const formData = new FormData(this);
-                formData.append('strategic', strategicCheckbox.checked ? '1' : '0');
-                formData.append('training', training.checked ? '1' : '0');
-                const plainFormData = Object.fromEntries(formData.entries());
-                const formDataJsonString = JSON.stringify(plainFormData);
-                const response = await fetch('/userprofile', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: formDataJsonString
-                });
-                console.log(response)
-                if (response.ok) {
-                    alert('Profile updated successfully!');
-                    $('#myModal').modal('hide');
-                } else {
-                    const errorMsg = await response.text(); // Assuming the server sends a plain text error message
-                    alert('Error submitting data: ' + errorMsg);
+            document.getElementById('userdetailsform').addEventListener('submit', async function(e) {
+                e.preventDefault(); // Prevent the default form submission behavior
+                try {
+                    const formData = new FormData(this);
+                    formData.append('strategic', strategicCheckbox.checked ? '1' : '0');
+                    formData.append('training', training.checked ? '1' : '0');
+                    const plainFormData = Object.fromEntries(formData.entries());
+                    const formDataJsonString = JSON.stringify(plainFormData);
+                    const response = await fetch('/userprofile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: formDataJsonString
+                    });
+                    console.log(response)
+                    if (response.ok) {
+                        alert('Profile updated successfully!');
+                        $('#myModal').modal('hide');
+                    } else {
+                        const errorMsg = await response.text(); // Assuming the server sends a plain text error message
+                        alert('Error submitting data: ' + errorMsg);
+                    }
+                } catch (error) {
+                    console.error('An error occurred:', error);
+                    alert('An error occurred, check the console for details.');
                 }
-            } catch (error) {
-                console.error('An error occurred:', error);
-                alert('An error occurred, check the console for details.');
-            }
+            });
         });
-        });
-        </script>
+    </script>
 </body>
 </html>
