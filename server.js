@@ -198,7 +198,21 @@ function makeid(length) {
 
 app.post('/updateDataAnonymous', async (req, res) => {
     var id = makeid(20)
-    res.body = {'user': id, 'data': req.body}
+    if (!req.body || !req.body.data) {
+        res.status(401).send('User is not authenticated');
+        return;
+    }
+
+    let data;
+    if (typeof req.body.data === 'string') {
+        data = JSON.parse(req.body.data);
+    } else if (typeof req.body.data === 'object') {
+        data = req.body.data;
+    } else {
+        res.status(401).send("data not json");
+        return;
+    }
+
     // const existingUser = await User.updateOne({ auth0Id: req.user.id }).exec();
     // if (existingUser) {
     //     id = makeid(20)
@@ -206,7 +220,7 @@ app.post('/updateDataAnonymous', async (req, res) => {
     // }
     const newUser = new User({auth0Id: id});
     await newUser.save();
-    User.updateOne({auth0Id: id}, {$push: {"experiments": JSON.parse(req.body.data)}})
+    User.updateOne({auth0Id: id}, {$push: {"experiments": JSON.parse(data)}})
         .then(result => {
             console.log('Update successful', result);
             res.status(200).json({'user': id, 'data': result});
