@@ -212,6 +212,7 @@ app.post('/updateDataAnonymous', async (req, res) => {
         res.status(401).send("data not json");
         return;
     }
+    console.log(data);
 
     // const existingUser = await User.updateOne({ auth0Id: req.user.id }).exec();
     // if (existingUser) {
@@ -220,7 +221,7 @@ app.post('/updateDataAnonymous', async (req, res) => {
     // }
     const newUser = new User({auth0Id: id});
     await newUser.save();
-    User.updateOne({auth0Id: id}, {$push: {"experiments": JSON.parse(data)}})
+    User.updateOne({auth0Id: id}, {$push: {"experiments": data}})
         .then(result => {
             console.log('Update successful', result);
             res.status(200).json({'user': id, 'data': result});
