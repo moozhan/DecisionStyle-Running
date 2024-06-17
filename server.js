@@ -184,6 +184,40 @@ app.post('/updateData',(req, res) => {
     }
 });
 
+function makeid(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter += 1;
+    }
+    return result;
+}
+
+app.post('/updateDataAnonymous', async (req, res) => {
+    var id = makeid(20)
+    res.body = {'user': id, 'data': req.body}
+    const existingUser = await User.updateOne({ auth0Id: req.user.id }).exec();
+    if (existingUser) {
+        id = makeid(20)
+        res.body = {'user': id, 'data': req.body}
+    }
+    const newUser = new User({auth0Id: id});
+    await newUser.save();
+    User.updateOne({auth0Id: id}, {$push: {"experiments": JSON.parse(req.body.data)}})
+        .then(result => {
+            console.log('Update successful', result);
+            res.status(200).json({'user': id, 'data': result});
+        })
+        .catch(error => {
+            console.error('Error updating user', error);
+            res.status(500).json({error: 'Error updating user details'});
+        });
+
+})
+
 
 app.get('/indecision', (req, res) => {
     if (req.isAuthenticated()) {
