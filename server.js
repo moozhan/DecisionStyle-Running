@@ -23,8 +23,8 @@ app.set("view engine", "ejs");
 // Set the views directory
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static('public'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({'limit': '50mb'}));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
 
 app.set('trust proxy', 1); // Trust first proxy
