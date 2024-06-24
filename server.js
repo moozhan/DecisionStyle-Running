@@ -265,6 +265,9 @@ app.post('/updateDataTurk',  async (req, res) => {
         if (!existingUser) {
             return res.status(400).json({ message: 'User does not exist' });
         }
+    } else {
+        res.status(401).json({ error: 'Bad exp_id' });
+        return;
     }
     User.updateOne({auth0Id: user_id}, {$push: {"experiments": data}})
         .then(result => {
