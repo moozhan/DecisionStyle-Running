@@ -212,7 +212,6 @@ app.post('/updateDataAnonymous', async (req, res) => {
         res.status(401).send("data not json");
         return;
     }
-    console.log(data);
 
     // const existingUser = await User.updateOne({ auth0Id: req.user.id }).exec();
     // if (existingUser) {
@@ -221,6 +220,52 @@ app.post('/updateDataAnonymous', async (req, res) => {
     // }
     const newUser = new User({auth0Id: id});
     await newUser.save();
+    User.updateOne({auth0Id: id}, {$push: {"experiments": data}})
+        .then(result => {
+            console.log('Update successful', result);
+            res.status(200).json({'user': id, 'data': result});
+        })
+        .catch(error => {
+            console.error('Error updating user', error);
+            res.status(500).json({error: 'Error updating user details'});
+        });
+
+})
+
+app.post('/updateDataTurk',  async (req, res) => {
+
+
+    if (!req.body || !req.body.data || !req.body.user_id || !req.body.exp_id) {
+        res.status(401).send('Bad Request');
+        return;
+    }
+
+    let data;
+    if (typeof req.body.data === 'string') {
+        data = JSON.parse(req.body.data);
+    } else if (typeof req.body.data === 'object') {
+        data = req.body.data;
+    } else {
+        res.status(401).send("data not json");
+        return;
+    }
+
+    var user_id = req.body.user_id;
+    console.log(user_id);
+    var exp_id = req.body.exp_id;
+    const existingUser = await User.findOne({ auth0Id: user_id}, 'auth0Id experiments');
+    if (exp_id == 0) {
+        //check if user exists do not accept, else create the user and update the data
+        if (existingUser) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+        const newUser = new User({auth0Id: id});
+        await newUser.save();
+    } else if (exp_id == 1) {
+        if (!existingUser) {
+            return res.status(400).json({ message: 'User does not exist' });
+        }
+    }
     User.updateOne({auth0Id: id}, {$push: {"experiments": data}})
         .then(result => {
             console.log('Update successful', result);
