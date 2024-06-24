@@ -251,7 +251,7 @@ app.post('/updateDataTurk',  async (req, res) => {
     }
 
     var user_id = req.body.user_id;
-    console.log(user_id);
+    console.log(user_id, req.body.exp_id);
     var exp_id = req.body.exp_id;
     const existingUser = await User.findOne({ auth0Id: user_id}, 'auth0Id experiments');
     if (exp_id == 0) {
