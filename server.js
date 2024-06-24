@@ -259,17 +259,17 @@ app.post('/updateDataTurk',  async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
-        const newUser = new User({auth0Id: id});
+        const newUser = new User({auth0Id: user_id});
         await newUser.save();
     } else if (exp_id == 1) {
         if (!existingUser) {
             return res.status(400).json({ message: 'User does not exist' });
         }
     }
-    User.updateOne({auth0Id: id}, {$push: {"experiments": data}})
+    User.updateOne({auth0Id: user_id}, {$push: {"experiments": data}})
         .then(result => {
             console.log('Update successful', result);
-            res.status(200).json({'user': id, 'data': result});
+            res.status(200).json({'user': user_id, 'data': result});
         })
         .catch(error => {
             console.error('Error updating user', error);
