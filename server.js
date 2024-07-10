@@ -253,19 +253,27 @@ app.post('/updateDataTurk',  async (req, res) => {
     var user_id = req.body.user_id;
     console.log(user_id, req.body.exp_id);
     var exp_id = req.body.exp_id;
-    const existingUser = await User.findOne({ auth0Id: user_id}, 'auth0Id experiments');
     if (exp_id == 0) {
         //check if user exists do not accept, else create the user and update the data
+        user_id = "mturk|"+user_id;
+        const existingUser = await User.findOne({ auth0Id: user_id}, 'auth0Id experiments');
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
         const newUser = new User({auth0Id: user_id});
         await newUser.save();
     } else if (exp_id == 1) {
+        user_id = "mturk|"+user_id;
+        const existingUser = await User.findOne({auth0Id: user_id}, 'auth0Id experiments');
         if (!existingUser) {
-            return res.status(400).json({ message: 'User does not exist' });
+            return res.status(400).json({message: 'User does not exist'});
         }
-    } else {
+    } else if (exp_id == -1) {
+        user_id = "random|"+user_id;
+        const newUser = new User({auth0Id: user_id});
+        await newUser.save();
+    }
+    else {
         res.status(401).json({ error: 'Bad exp_id' });
         return;
     }
