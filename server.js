@@ -31,7 +31,7 @@ app.set('trust proxy', 1); // Trust first proxy
 app.use(cors({
   origin: ['https://lazy-puce-tortoise-yoke.cyclic.app', 'https://moozhan.github.io', 'https://dev-backend.d4id81j7108zr.amplifyapp.com',
   'https://fourinarow.decisionmakingstyle.com', 'https://turk-dev.d4id81j7108zr.amplifyapp.com', 'https://turk-dev-s1.d4id81j7108zr.amplifyapp.com',
-  'https://turk-dev-s2.d4id81j7108zr.amplifyapp.com'], // Update with the location of your HTML file
+  'https://turk-dev-s2.d4id81j7108zr.amplifyapp.com', 'https://fixed-opp.d4id81j7108zr.amplifyapp.com'], // Update with the location of your HTML file
   credentials: true
 }));
 app.use(cookieParser());
@@ -272,6 +272,11 @@ app.post('/updateDataTurk',  async (req, res) => {
     } else if (exp_id == -1) {
         user_id = "random|"+user_id;
         const newUser = new User({auth0Id: user_id});
+        await newUser.save();
+    } else if (exp_id == -2) {
+        // games are with constant opponent
+        user_id = "random|"+user_id;
+        const newUser = new User({auth0Id: user_id, exp_id:exp_id});
         await newUser.save();
     }
     else {

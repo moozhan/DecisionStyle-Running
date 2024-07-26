@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     auth0Id: {type: String, required: true, unique: true},
     // username: { type: String, required: true, unique: true},
     // email: { type: String, required: true, unique: true },
+    exp_id: {type: Number, required: false, unique: false},
     indecision: {type: Array, default: []},
     userdetails: {type: Array, default: []},
     experiments: {type: Array, default: []},
