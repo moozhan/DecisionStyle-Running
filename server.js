@@ -273,7 +273,7 @@ app.post('/updateDataTurk',  async (req, res) => {
         user_id = "random|"+user_id;
         const newUser = new User({auth0Id: user_id});
         await newUser.save();
-    } else if (exp_id == -2) {
+    } else if (exp_id < -1) {
         // games are with constant opponent
         user_id = "random|"+user_id;
         const newUser = new User({auth0Id: user_id, exp_id:exp_id});
